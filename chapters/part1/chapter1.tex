@@ -1,0 +1,201 @@
+\chapter{Introduction}
+
+\section{Course Information}
+
+\begin{listu}
+    \item \textbf{Instructor}: Nathan Wiebe
+
+    \begin{listu}
+        \item \textbf{Email}: \href{mailto:nawibe@cs.toronto.edu}{nawibe@cs.toronto.edu}
+        \item \textbf{Office}: SF 3318C
+    \end{listu}
+
+    \item \textbf{Text}: [CLRS] \textit{Introduction to Algorithms}: Cormen, Thomas H., Leiserson, Charles E., Rivest, Ronald L., Stein, Clifford
+
+    % Optional: 
+    
+    % \begin{listu}
+    %     \item [DPV] \textit{Algorithms}: Dasgupta, Sanjoy, Papadimitriou, Christos H., Vazirani, Umesh
+    %     \item [KT] \textit{Algorithm Design}: Kleinberg, Jon, Tardos, Eva
+    % \end{listu}
+
+    \item \textbf{Disclaimer}: Many things are up in the air, so expect a somewhat bumpy ride at the start but hopefully, we will get through together! Use any of the feedback mediums (email, Piazza, \dots) to let the instructor know if there are any suggestions for improvement. 
+\end{listu}
+
+\section{Grading}
+
+\subsection{Assignments}
+
+\begin{listu}
+    \item \bred{4 assignments}, best 3 out of 4
+    \item Group work
+    \begin{listu}
+        \item In groups of \itblue{up to three} students
+        \item Best way to learn is for each member to try each problem
+    \end{listu}
+    \item Questions will be \bred{more difficult}
+    \begin{listu}
+        \item May need to mull them over for several days; do not expect to start and finish the assignment on the same day!
+        \item May include bonus questions
+    \end{listu}
+    \item Submission on \bred{crowdmark}, more details later. May need to compress the PDF. 
+\end{listu}
+
+\subsection{Tests}
+
+\begin{listu}
+    \item 2 term tests, one end-of-term test (final exam / assessment)
+    \item Time and Place
+    \begin{listu}
+        \item Fridays during Tutorials
+        \item In-person 
+    \end{listu}
+\end{listu}
+
+\subsection{Grading Scheme}
+
+\begin{center}
+    \begin{tabular}{l c c c c}
+        Best 3/4 Assignments & $\times$ & $10\%$ & $=$ & $30\%$ \\
+        2 Term Tests         & $\times$ & $20\%$ & $=$ & $40\%$ \\
+        Final Exam           & $\times$ & $30\%$ & $=$ & $30\%$ \\
+    \end{tabular}
+\end{center}
+
+\textbf{Note}: There is \bred{no} auto-fail policy for the final exam.
+
+\section{Course Information}
+
+\subsection{What is this course about?}
+
+\begin{listu}
+    \item What if we can't find an efficient algorithm for a problem?
+
+    \begin{listu}
+        \item Try to prove that the problem is hard 
+        \item Formally establish complexity results 
+        \item NP-completeness, NP-hardness, \dots
+    \end{listu}
+    
+    \item We'll often find that one problem may be easy, but its simple variants may suddenly become hard. 
+    
+    \begin{listu}
+        \item Minimum spanning tree (MST) vs. bounded degree MST
+        \item 2-colorability vs 3-colorability
+    \end{listu}
+\end{listu}
+
+\subsection{Proofs}
+
+In this course you are expected to provide a clear and compelling argument about why you're right about ant claim about an algorithm. We call these argument proofs. 
+
+Proof structures used in this course:
+\begin{listu}
+    \item Induction 
+    \item Contradiction
+    \item Desperation\dots
+\end{listu}
+
+\subsubsection{Inductive Proof}
+
+Key idea with induction:
+
+\begin{listu}
+    \item Break the problem into a number of steps, $s(i)$. 
+    \item Show that induction hypothesis holds for base case $s(0)$. 
+    \item Show that if hypothesis holds for $s(i)$ then it holds for step $s(i+1)$.
+\end{listu}
+
+\begin{theorem}[Principle of Mathematical Induction]
+    Let $P(n)$ be a predicate defined for integers $n \geq 0$. If
+    \begin{listo}
+        \item $P(0)$ is true, and
+        \item $P(k)$ implies $P(k+1)$ for all integers $k \geq 0$,
+    \end{listo}
+    then $P(n)$ is true for all integers $n \geq 0$.
+\end{theorem}
+
+\begin{example}
+    Say you want to find the best person to marry in Stardew Valley. 
+
+    \begin{center}
+        \includegraphics[width=0.75\linewidth]{figures/Stardew Valley.png}
+    \end{center}
+
+    You can apply a single iteration of Bubblesort to find that Sebastian is objectively the best person to marry. 
+
+    {~~~}
+
+    \begin{algorithmic}[1]
+        \Procedure{Bubblesort}{$A$}
+            \For{$i = 1$ to $n-1$}
+                \For{$j = 1$ to $n-i$}
+                    \If{$A[j] > A[j+1]$}
+                        \State \Call{Swap}{$A[j], A[j+1]$}
+                    \EndIf
+                \EndFor
+            \EndFor
+        \EndProcedure
+    \end{algorithmic}
+
+    {~~~}
+
+    \begin{proof}
+        Proof by induction on the number of iterations of Bubblesort.
+
+        \begin{listu}
+            \item \textbf{Base case}: $s(1)$
+            
+            Then swap doesn't happen and you have a trivially sorted array.
+
+            \item \textbf{Induction Steps}: $s(i) \rightarrow s(i+1)$
+            
+            Assume that $s(i)$ is sorted by the algorithm for any array $s$ of length $i$. 
+
+            \[
+                s_0, s_1, \dots, y = s_{i-1}, x = s_i
+            \]
+
+
+            \begin{listo}
+                \item \textbf{Case 1}: $x > y$
+                
+                Then, comparison between $x$, $y$ says you should swap them.
+
+                \item \textbf{Case 2}: $x \le y$
+                
+                Then, comparison between $x$, $y$ says you should not swap them. The array is still sorted.
+            \end{listo}
+        \end{listu}
+    \end{proof}
+\end{example}
+
+\subsubsection{Contradiction}
+
+\begin{listu}
+    \item Assume that the opposite of the hypothesis were true. 
+    \item Show that if the opposite were true then the assumptions of the problem would be violated. 
+\end{listu}
+
+This needs more finesse than a proof by induction. There can be a lot more slick when it works. 
+
+\begin{listu}
+    \item Working out small examples of the problem helps. 
+    \item Argue about the first/last position where the hypothesis fails to be true. 
+\end{listu}
+
+\begin{example}
+    Assume that \textsc{Bubblesort} is does not return the best element (smallest) on right. 
+
+    Let $i$ be first position where in the array $s$, $s(i + 1) > s(i)$.
+
+    \begin{listo}
+        \item \textbf{Case 1}: $s(i) > s(i+1)$
+        
+        Then, \textsc{Bubblesort} would have swapped them. 
+
+        \item \textbf{Case 2}: $s(i) < s(i+1)$
+        
+        Then, \textsc{Bubblesort} would have not swapped them.
+    \end{listo}
+\end{example}
