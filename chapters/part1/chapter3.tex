@@ -1,0 +1,165 @@
+\chapter{Greedy Algorithms}
+
+\section{Introduction}
+
+\term{Greedy algorithms} are a class of algorithms that make locally optimal choices at each step in order to find a global optimum. They are often used to solve optimization problems.
+
+\begin{listu}
+    \item \textbf{Goal:} find a solution $x$ maximizing or minimizing some objective function $f$. 
+    \item \textbf{Challenge:} space of possible solutions $x$ is too large to search exhaustively.
+    \item \textit{Insight:} $x$ is composed of several parts (e.g., $x$ is a set or a sequence).
+    \item \textbf{Approach:} instead of computing $x$ directly, compute $x$ one part at a time.
+    \begin{listu}
+        \item Select the next part ``greedily'' to get the most immediate ``benefit'', which needs to be defined carefully for each problem.
+        \item Polynomial running time is typically guaranteed.
+        \item Need to prove that this will always return an optimal solution despite having no global view of the problem.
+    \end{listu}
+\end{listu}
+
+\section{Interval Scheduling}
+
+\subsection{Problem Definition}
+
+\begin{listu}
+    \item \textbf{Problem}
+    
+    \begin{listu}
+        \item Job $j$ starts at time $s_j$ and finishes at time $f_j$.
+        \item Two jobs $i$ and $j$ are compatible if $[s_i, f_i)$ and $[s_j, f_j)$ do not overlap.
+        \item \textbf{Goal:} find a maximum-size subset of mutually compatible jobs.
+    \end{listu}
+
+    \item \textbf{Applications}
+
+    \begin{listu}
+        \item Scheduling jobs on a single machine.
+        \item Scheduling classes in a classroom.
+        \item Scheduling packets on a link.
+    \end{listu}
+\end{listu}
+
+% TODO: counter examples
+
+\begin{minipage}[t]{0.55\linewidth}
+    \begin{center} \begin{tikzpicture}[baseline=(current bounding box.center)]
+        \definecolor{lightGray}{gray}{0.9}
+        \definecolor{darkGray}{gray}{0.7}
+
+        \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.5cm] at (0, 0) {};
+        \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.5cm] at (1.5, 0) {};
+        \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.5cm] at (3, 0) {};
+        \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.5cm] at (4.5, 0) {};
+
+        \node[draw=none, fill=darkGray, minimum width=6cm, minimum height=0.5cm] at (2.25, -0.75) {};
+    \end{tikzpicture} \end{center}
+\end{minipage}
+\begin{minipage}[t]{0.35\linewidth}
+    \begin{center}
+        Earliest Start Time
+    \end{center}
+\end{minipage}
+
+{~~~}
+
+{~~~}
+
+\begin{minipage}[t]{0.55\linewidth}
+    \begin{center} \begin{tikzpicture}[baseline=(current bounding box.center)]
+        \definecolor{lightGray}{gray}{0.9}
+        \definecolor{darkGray}{gray}{0.7}
+
+        \node[draw=none, fill=lightGray, minimum width=3cm, minimum height=0.5cm] at (0, 0) {};
+        \node[draw=none, fill=lightGray, minimum width=3cm, minimum height=0.5cm] at (3.5, 0) {};
+
+        \node[draw=none, fill=darkGray, minimum width=2cm, minimum height=0.5cm] at (1.75, -0.75) {};
+    \end{tikzpicture} \end{center}
+\end{minipage}
+\begin{minipage}[t]{0.35\linewidth}
+    \begin{center}
+        Shortest Interval
+    \end{center}
+\end{minipage}
+
+{~~~}
+
+{~~~}
+
+\begin{minipage}[t]{0.55\linewidth}
+    \begin{center} \begin{tikzpicture}[baseline=(current bounding box.center)]
+        \definecolor{lightGray}{gray}{0.9}
+        \definecolor{darkGray}{gray}{0.7}
+
+        \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.5cm] at (0, 0) {};
+        \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.5cm] at (1.5, 0) {};
+        \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.5cm] at (3, 0) {};
+        \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.5cm] at (4.5, 0) {};
+
+        \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.5cm] at (0.75, -0.75) {};
+        \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.5cm] at (0.75, -1.5) {};
+        \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.5cm] at (0.75, -2.25) {};
+
+        \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.5cm] at (3.75, -0.75) {};
+        \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.5cm] at (3.75, -1.5) {};
+        \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.5cm] at (3.75, -2.25) {};
+
+        \node[draw=none, fill=darkGray, minimum width=1cm, minimum height=0.5cm] at (2.25, -0.75) {};
+    \end{tikzpicture} \end{center}
+\end{minipage}
+\begin{minipage}[t]{0.35\linewidth}
+    \begin{center}
+        Fewest Conflicts
+    \end{center}
+\end{minipage}
+
+\subsection{Greedy Algorithm}
+
+We can implement greedy with earliest finish time (EFT)
+
+\begin{listu}
+    \item Sort jobs by finish time, say $f_1 \le f_2 \le \dots \le f_n$. \[
+        \mathcal{O}(n \log n)
+    \]
+
+    \item For each job $j$, we need to check if it's compatible will \itblue{all} previously added jobs. 
+    
+    \begin{listu}
+        \item Natively, this is $\mathcal{O}(n^2)$, as we need $\mathcal{O}(n)$ for each job.
+        \item We only need to check if $s_j \ge f_{i^*}$, where $i^*$ is the \itblue{last job added}.
+        \begin{listu}
+            \item For any jobs $i$ added before $i^*$, we have $f_i \le f_{i^*}$.
+            \item By keeping track of $f_{i^*}$, we can check compatibility of job $j$ in $\mathcal{O}(1)$.
+        \end{listu}
+    \end{listu}
+
+    \item Thus, the total running time is \[ 
+        \mathcal{O}(n \log n).
+    \]
+\end{listu}
+
+\subsection{Proof of Optimality}
+
+\subsubsection{By Contradiction}
+
+\begin{listu}
+    \item Suppose for contradiction that greedy is not optimal
+
+    \item Say greedy selects jobs $i_1, i_2, \dots, i_k$ sorted by finish time
+
+    \item Consider an optimal solution $j_1, j_2, \dots, j_m$ sorted by finish time which matches greedy for as many indices as possible. That is, $j_1 = i_1, j_2 = i_2, \dots, j_r = i_r$ for the greatest possible $r$.
+    
+    \item Both $i_{r+1}$ and $j_{r+1}$ are compatible with $i_1, i_2, \dots, i_r = j_1, j_2, \dots, j_r$.
+
+    \item Consider a new solution $i_1, i_2, \dots, i_r, {\color{red}j_{r+1}}, {\color{lightBlue}j_{r+2}, \dots, j_m}$.
+    
+    \begin{listu}
+        \item We have replaced $j_{r+1}$ by $i_{r+1}$ in our reference optimal solution
+        \item This is still \bred{feasible} because $f_{i_{r+1}} \le f_{j_{r+1}} \le s_{j_{t}}$ for $t \ge r+2$.
+        \item This is still \bred{optimal} because $m$ jobs are sorted. 
+        \item But it matched the greedy solution in $r + 1$ indices. This is a contradiction, as greedy is optimal.
+    \end{listu}
+\end{listu}
+
+\subsubsection{By Induction}
+
+% TODO: see slides
+TODO: SEE SLIDES

@@ -367,3 +367,54 @@ Thus, the total running running time is \[
 \] 
 
 By the master theorem, this yields $T(n) = \mathcal{O}(n \log n)$.
+
+\subsection{Multiplication Algorithms}
+
+\subsubsection{Karatsuba's Algorithm}
+
+\begin{listu}
+    \item \textbf{Problem}
+    
+    Given two $n$-bit integers $x$ and $y$, compute their product $xy$.
+
+    \item \textbf{Applications}
+    
+    \begin{listu}
+        \item Multiplying large integers
+        \item Multiplying large polynomials
+        \item Multiplying large matrices
+    \end{listu}
+
+    \item \textbf{Brute force} is $\mathcal{O}(n^2)$.
+\end{listu}
+
+Karatsuba's observed that we can divide each integer into two halves, \[
+    x = x_1 \cdot 10^{\frac{n}{2}} + x_2  \qquad y = y_1 \cdot 10^{\frac{n}{2}} + y_2
+\] and then \[
+    xy = (x_1y_1) \cdot 10^n + (x_1y_2 + x_2y_1) \cdot 10^{\frac{n}{2}} + x_2y_2
+\] so four $n/2$-bit integer multiplications can be replaced by three: \[
+    x_1y_2 + x_2y_1 = (x_1 + x_2)(y_1 + y_2) - x_1y_1 - x_2y_2
+\] This would give a running time of \[
+    T(n) \le 3T\left( \frac{n}{2} \right) + \mathcal{O}(n) \implies T(n) = \mathcal{O}(n^{\log_2 3}) \approx \mathcal{O}(n^{1.59})
+\]
+
+\subsubsection{Strassen's Algorithm}
+
+Strassen's algorithm is a generalization of Karatsuba's algorithm to design a fast algorithm for multiplying two $n \times n$ matrices.
+
+\begin{listu}
+    \item We call $n$ the ``size'' of the problem \[
+        \begin{bmatrix}
+            C_{11} & C_{12} \\
+            C_{21} & C_{22}
+        \end{bmatrix} = \begin{bmatrix}
+            A_{11} & A_{12} \\
+            A_{21} & A_{22}
+        \end{bmatrix} \begin{bmatrix}
+            B_{11} & B_{12} \\
+            B_{21} & B_{22}
+        \end{bmatrix}
+    \]
+
+    \item Natively, this requires $2^3 = 8$ matrix multiplications of size $\frac{n}{2} \times \frac{n}{2}$.
+\end{listu}
