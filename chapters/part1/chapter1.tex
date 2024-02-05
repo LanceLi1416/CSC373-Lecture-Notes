@@ -115,7 +115,7 @@ Key idea with induction:
     then $P(n)$ is true for all integers $n \geq 0$.
 \end{theorem}
 
-\begin{example}
+\textbf{\color{primary}Example.}
     Say you want to find the best person to marry in Stardew Valley. 
 
     \begin{center}
@@ -124,24 +124,22 @@ Key idea with induction:
 
     You can apply a single iteration of Bubblesort to find that Sebastian is objectively the best person to marry. 
 
-    {~~~}
-
-    \begin{algorithmic}[1]
-        \Procedure{Bubblesort}{$A$}
-            \For{$i = 1$ to $n-1$}
-                \For{$j = 1$ to $n-i$}
-                    \If{$A[j] > A[j+1]$}
-                        \State \Call{Swap}{$A[j], A[j+1]$}
-                    \EndIf
+    \begin{algorithm}
+        \begin{algorithmic}[1]
+            \Function{Bubble-Sort}{$A$}
+                \For{$i = 1$ to $n-1$}
+                    \For{$j = 1$ to $n-i$}
+                        \If{$A[j] > A[j+1]$}
+                            \State \Call{Swap}{$A[j], A[j+1]$}
+                        \EndIf
+                    \EndFor
                 \EndFor
-            \EndFor
-        \EndProcedure
-    \end{algorithmic}
+            \EndFunction
+        \end{algorithmic}
+    \end{algorithm}
 
-    {~~~}
-
-    \begin{proof}
-        Proof by induction on the number of iterations of Bubblesort.
+    \textit{Proof.}
+        Proof by induction on the number of iterations of \textsc{Bubble-Sort}.
 
         \begin{listu}
             \item \textbf{Base case}: $s(1)$
@@ -167,8 +165,8 @@ Key idea with induction:
                 Then, comparison between $x$, $y$ says you should not swap them. The array is still sorted.
             \end{listo}
         \end{listu}
-    \end{proof}
-\end{example}
+
+    Thus, by induction, the algorithm will sort any array. \hfill\qed{\color{primary}\ensuremath\diamondsuit}
 
 \subsubsection{Contradiction}
 

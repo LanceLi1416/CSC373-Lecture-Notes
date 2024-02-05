@@ -7,16 +7,16 @@
 
 \section{Introduction}
 
-\term{Divide and Conquer} is a general algorithm design paradigm
+\term{Divide and Conquer}\index{Divide and Conquer} is a general algorithm design paradigm
 
 \begin{listu}
-    \item \textbf{Divide} the problem into smaller subproblems
-    \item \textbf{Conquer} the subproblems recursively
-    \item \textbf{Combine} the solutions to the subproblems into a solution to the original problem
+    \item \textbf{Divide} the problem into smaller subproblems of the same type.
+    \item \textbf{Conquer} each subproblems recursively and independently.
+    \item \textbf{Combine} solutions from subproblems and/or solve remaining part of the original problem.
 \end{listu}
 
 \begin{example}[Merge Sort]
-    \textsc{MergeSort} is a sorting algorithm that uses the divide and conquer paradigm.
+    \textsc{Merge-Sort} is a sorting algorithm that uses the divide and conquer paradigm.
 
     \begin{listu}
         \item \textbf{Divide}: Split the array into two halves
@@ -34,16 +34,14 @@
 Merge sort is a sorting algorithm that uses the divide and conquer paradigm. It divides the array into two halves, sorts the two halves recursively, and merges the two sorted halves into a sorted array.
 
 \begin{algorithm}
-    \caption{Merge Sort}
-
     \begin{algorithmic}[1]
-        \Function{MergeSort}{$A$}
+        \Function{Merge-Sort}{$A$}
             \If{$|A| \le 2$}
                 \State \Return \Call{BruteForceSort}{$A$}
             \EndIf
             \State $m \gets \lfloor |A| / 2 \rfloor$
-            \State $L \gets \Call{MergeSort}{A[1 \dots m]}$
-            \State $R \gets \Call{MergeSort}{A[m+1 \dots |A|]}$
+            \State $L \gets \Call{Merge-Sort}{A[1 \dots m]}$
+            \State $R \gets \Call{Merge-Sort}{A[m+1 \dots |A|]}$
             \State \Return $\Call{Merge}{L, R}$
         \EndFunction
     \end{algorithmic}
@@ -54,8 +52,6 @@ Merge sort is a sorting algorithm that uses the divide and conquer paradigm. It 
 \end{claim}
 
 \begin{algorithm}
-    \caption{Merge}
-
     \begin{algorithmic}[1]
         \Function{Merge}{$L, R$}
             \State $i \gets 1$
@@ -76,6 +72,7 @@ Merge sort is a sorting algorithm that uses the divide and conquer paradigm. It 
 \end{algorithm}
 
 \begin{center}
+    \tikzexternalenable
     \begin{tikzpicture}
         \node (root) at (0, 0) {$n$};
         \node (l) at (-2, -1)  {$\displaystyle \frac{n}{2^1}$};
@@ -98,9 +95,10 @@ Merge sort is a sorting algorithm that uses the divide and conquer paradigm. It 
         \draw (r) -- (rl);
         \draw (r) -- (rr);
     \end{tikzpicture}
+    \tikzexternaldisable
 \end{center}
 
-To compute the cost of \textsc{MergeSort}, we need to compute the cost of \textsc{Merge} and the cost of the levels. 
+To compute the cost of \textsc{Merge-Sort}, we need to compute the cost of \textsc{Merge} and the cost of the levels. 
 
 \begin{claim}
     The cost of the levels is \[
@@ -112,25 +110,25 @@ Indeed, in each level $j$, there are $2^j$ subproblems of size $\frac{n}{2^j}$, 
     \left( \frac{n}{2^j} \right) \cdot \mathcal{O}(2^j) = \mathcal{O}(n).
 \]
 
-Then, the cost of \textsc{MergeSort} is \[
+Then, the cost of \textsc{Merge-Sort} is \[
     \sum_{j=1}^{\log_2 n - 1} \left( \frac{n}{2^j} \right) \cdot \mathcal{O}(2^j) = \mathcal{O}(n \log n)
 \]
 
 \begin{claim}
-    \textsc{MergeSort} is correct.
+    \textsc{Merge-Sort} is correct.
 \end{claim}
 
+% \begin{proof}
+%     Proof by contradiction. 
+
+%     Assume that \textsc{Merge-Sort} is not correct. 
+
+%     % TODO
+%     TODO: prove on a case by case basis
+% \end{proof}
+
 \begin{proof}
-    Proof by contradiction. 
-
-    Assume that \textsc{MergeSort} is not correct. 
-
-    % TODO
-    TODO: prove on a case by case basis
-\end{proof}
-
-\begin{proof}
-    Proof by induction on the number of iterations of \textsc{MergeSort}.
+    By induction on the number of iterations of \textsc{Merge-Sort}.
 
     \begin{listu}
         \item \textbf{Base case}: $s(2)$
@@ -139,23 +137,25 @@ Then, the cost of \textsc{MergeSort} is \[
 
         \item \textbf{Induction Steps}
         
-        Assume \textsc{MergeSort} is correct for any array $s$ of length $L \ge 2$. 
+        Assume \textsc{Merge-Sort} is correct for any array $s$ of length $L \ge 2$. 
 
         Without loss of generality, assume $L$ is a power of 2. For the other cases, some extra work is needed.
         
         \begin{center}
+            \tikzexternalenable
             \begin{tikzpicture}
                 \node (root) at (0, 0) {};
                 \filldraw (root) circle (2pt);
                 \node (l) at (-2, -1)  {$s_1$ with $L$ elements};
                 \node (r) at (2, -1)   {$s_2$ with $L$ elements};
-
+            
                 \draw (root) -- (l);
                 \draw (root) -- (r);
             \end{tikzpicture}
+            \tikzexternaldisable
         \end{center}
 
-        If \textsc{MergeSort} is correct, then $s_1$ and $s_2$ are sorted.
+        If \textsc{Merge-Sort} is correct, then $s_1$ and $s_2$ are sorted.
 
         For $j = 1$ to $L$, compare $s_1[j]$ to $s_2[j]$ and insert if $s_1[j] \ge s_2[j]$.
 
@@ -163,10 +163,10 @@ Then, the cost of \textsc{MergeSort} is \[
 
         This implies that, in cases of mistake, then the order must have been wrong to start with. 
 
-        This is a contradiction, as we assumed that \textsc{MergeSort} is correct for $L$ elements.
-
-        Thus, \textsc{MergeSort} is correct. 
+        This is a contradiction, as we assumed that \textsc{Merge-Sort} is correct for $L$ elements.
     \end{listu}
+
+    Thus, \textsc{Merge-Sort} is correct. 
 \end{proof}
 
 \subsection{Counting Inversions}
@@ -187,7 +187,7 @@ Then, the cost of \textsc{MergeSort} is \[
     \end{listu}
 \end{listu}
 
-\begin{definition}[Inversion]
+\begin{definition}[Inversion]\index{Inversion}\label{def:inversion}
     An \term{inversion} is a pair $(i, j)$ such that $i < j$ but $a[i] > a[j]$.
 \end{definition}
 
@@ -198,27 +198,31 @@ The brute force algorithm is to check all pairs $(i, j)$ and count the number of
     \item \textbf{Conquer}: Count the number of inversions in the two halves recursively
     \item \textbf{Combine}:
     \begin{listu}
-        \item Count the number of inversions where $i \in x$ and $j \in y$
-        \item Add the three counts together
+        \item \itblue{Solve}: Count the number of inversions where $i \in x$ and $j \in y$
+        \item \itblue{Merge}: Add the three counts together
     \end{listu}
 \end{listu}
 
-\begin{algorithm}
-    \caption{Sort and Count}
-
+\begin{algorithm}    
     \begin{algorithmic}[1]
-        \Function{SortAndCount}{$A$}
+        \Function{Sort-And-Count}{$L$}
             \If{$|A| \le 1$}
-                \State \Return $(A, 0)$
+                \State \Return $(0, L)$
             \EndIf
-            \State $m \gets \lfloor |A| / 2 \rfloor$
-            \State $(L, r_L) \gets \Call{SortAndCount}{A[1 \dots m]}$
-            \State $(R, r_R) \gets \Call{SortAndCount}{A[m+1 \dots |A|]}$
-            \State $(A', r_{LR}) \gets \Call{MergeAndCount}{L, R}$
-            \State \Return $(A', r_L + r_R + r_{LR})$
+            \State
+            \State \textsc{\color{primary}Divide} the list into two halves $A$ and $B$
+            \State $(r_A, A) \gets \Call{Sort-And-Count}{A}$
+            \State $(r_B, B) \gets \Call{Sort-And-Count}{B}$
+            \State $(r_{AB}, L') \gets \Call{Merge-And-Count}{A, B}$
+            \State
+            \State \Return $(r_A + r_B + r_{AB}, L')$
         \EndFunction
     \end{algorithmic}
 \end{algorithm}
+
+\begin{center}
+    \includegraphics[width=0.5\linewidth]{figures/counting-inversions.png}
+\end{center}
 
 Counting inversions $i \in x$ and $j \in y$ is done by merging the two sorted halves.
 
@@ -229,12 +233,9 @@ Counting inversions $i \in x$ and $j \in y$ is done by merging the two sorted ha
     \item Append the smaller element to the output array
 \end{listu}
 
-\newpage
 \begin{algorithm}
-    \caption{Merge and Count}
-
     \begin{algorithmic}[1]
-        \Function{MergeAndCount}{$L, R$}
+        \Function{Merge-And-Count}{$L, R$}
             \State $i \gets 1$
             \State $j \gets 1$
             \State $A \gets \emptyset$
@@ -289,6 +290,12 @@ To analyze the running time of \textsc{SortAndCount},
     \end{enumerate}
 \end{theorem}
 
+\begin{figure}[ht!]
+    \centering
+
+    \includegraphics[width=\linewidth]{figures/master-theorem.png}
+\end{figure}
+
 \subsection{Closest Pair}
 
 \begin{listu}
@@ -312,7 +319,7 @@ We can use the divide and conquer paradigm to solve this problem.
 \begin{listu}
     \item \textbf{Divide}: Split the points into two equal halves by drawing a vertical line $L$ through the median $x$-coordinate
 
-    \begin{center} \includegraphics[width=0.5\linewidth]{figures/Closest Pair Divide.png} \end{center}
+    \begin{center} \includegraphics[width=0.55\linewidth]{figures/Closest Pair Divide.png} \end{center}
 
     \item \textbf{Conquer}: Find the closest pair of points in each half recursively
 
@@ -320,7 +327,7 @@ We can use the divide and conquer paradigm to solve this problem.
 
     We can restrict our attention to points within $\delta$ of $L$ on each side, where $\delta = $ best of the solutions within the two halves. 
 
-    \begin{center} \includegraphics[width=0.5\linewidth]{figures/Closest Pair Conquer.png} \end{center}
+    \begin{center} \includegraphics[width=0.55\linewidth]{figures/Closest Pair Conquer.png} \end{center}
 
     \begin{listu}
         \item Only need to look at points within $\delta$ of $L$ on each side
@@ -328,32 +335,32 @@ We can use the divide and conquer paradigm to solve this problem.
         \item Only need to check each point with next 11 points in sorted list
     \end{listu}
 
-    \begin{remark}
-        \begin{minipage}[t]{0.55\linewidth}
-            We chose the number $11$ on purpose.
-
-            \begin{claim}
-                If two points are at least $12$ positions apart in the sorted list, their distance is at least $\delta$. 
-            \end{claim}
-
-            \begin{proof}
-                {~~~}
-
-                \begin{listu}
-                    \item No two points lie in the same $\frac{\delta}{2} \times \delta$ rectangle. 
-                    
-                    \item Two points that are more than two rows apart are at distance $\delta$. 
-                \end{listu}
-            \end{proof}
-        \end{minipage}
-        \hfill
-        \begin{minipage}[t]{0.4\linewidth}
-            \begin{center} \raisebox{-0.9\height}{ \includegraphics[width=0.9\linewidth]{figures/Closest Pair Grid.png} } \end{center}
-        \end{minipage}
-    \end{remark}
-
     \item Return the best of 3 solutions
 \end{listu}
+
+\begin{remark}
+    \begin{minipage}[t]{0.55\linewidth}
+        We chose the number $11$ on purpose.
+
+        \begin{claim}
+            If two points are at least $12$ positions apart in the sorted list, their distance is at least $\delta$.
+        \end{claim}
+
+        \begin{proof}
+            {~~~}
+
+            \begin{listu}
+                \item No two points lie in the same $\frac{\delta}{2} \times \delta$ rectangle.
+
+                \item Two points that are more than two rows apart are at distance $\delta$.
+            \end{listu}
+        \end{proof}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.4\linewidth}
+        \begin{center} \raisebox{-0.9\height}{ \includegraphics[width=0.9\linewidth]{figures/Closest Pair Grid.png} } \end{center}
+    \end{minipage}
+\end{remark}
 
 Let $T(n)$ be the worst-case running time of the algorithm. To analyze the Running time for the combine operation, 
 \begin{listu}
@@ -366,11 +373,11 @@ Thus, the total running running time is \[
     T(n) \le 2T\left( \frac{n}{2} \right) + \mathcal{O}(n \log n)
 \] 
 
-By the master theorem, this yields $T(n) = \mathcal{O}(n \log n)$.
+By the master theorem, this yields $T(n) = \mathcal{O}(n \log^2 n)$.
 
 \subsection{Multiplication Algorithms}
 
-\subsubsection{Karatsuba's Algorithm}
+\subsubsection{Karatsuba's Algorithm}\index{Karatsuba's Algorithm}\label{subsubsec:karatsuba}
 
 \begin{listu}
     \item \textbf{Problem}
@@ -400,7 +407,7 @@ Karatsuba's observed that we can divide each integer into two halves, \[
 
 \subsubsection{Strassen's Algorithm}
 
-Strassen's algorithm is a generalization of Karatsuba's algorithm to design a fast algorithm for multiplying two $n \times n$ matrices.
+Strassen's algorithm is a generalization of \hyperref[subsubsec:karatsuba]{Karatsuba's algorithm} to design a fast algorithm for multiplying two $n \times n$ matrices.
 
 \begin{listu}
     \item We call $n$ the ``size'' of the problem \[
@@ -416,5 +423,87 @@ Strassen's algorithm is a generalization of Karatsuba's algorithm to design a fa
         \end{bmatrix}
     \]
 
-    \item Natively, this requires $2^3 = 8$ matrix multiplications of size $\frac{n}{2} \times \frac{n}{2}$.
+    \item Nat\"ively, this requires $2^3 = 8$ matrix multiplications of size $\frac{n}{2}$. 
+    
+    \item Strassen's algorithm reduces this to $7$ matrix multiplications instead of $8$. \[
+        T(n) \le 7T\left( \frac{n}{2} \right) + \mathcal{O}(n^2) \implies T(n) = \mathcal{O}(n^{\log_2 7}) \approx \mathcal{O}(n^{2.81})
+    \]
 \end{listu}
+\vspace{-2em}
+\begin{algorithm}
+    \begin{algorithmic}[1]
+        \Function{Strassen}{$n, A, B$}
+        \If{$n = 1$}
+            % \State \Return $A \times B$
+            \Return $A \times B$
+        \EndIf
+
+        {~~~}
+
+        \State Partition $A$ and $B$ into $2 \times 2$ block matrices
+        \State $P_1 \gets \Call{Strassen}{\frac{n}{2}, A_{11}, (B_{12} - B_{22})}$
+        \State $P_2 \gets \Call{Strassen}{\frac{n}{2}, (A_{11} + A_{12}), B_{22}}$
+        \State $P_3 \gets \Call{Strassen}{\frac{n}{2}, (A_{21} + A_{22}), B_{11}}$
+        \State $P_4 \gets \Call{Strassen}{\frac{n}{2}, A_{22}, (B_{21} - B_{11})}$
+        \State $P_5 \gets \Call{Strassen}{\frac{n}{2}, (A_{11} + A_{22}), (B_{11} + B_{22})}$
+        \State $P_6 \gets \Call{Strassen}{\frac{n}{2}, (A_{12} - A_{22}), (B_{21} + B_{22})}$
+        \State $P_7 \gets \Call{Strassen}{\frac{n}{2}, (A_{11} - A_{21}), (B_{11} + B_{12})}$
+
+        {~~~}
+
+        \State $C_{11} \gets P_5 + P_4 - P_2 + P_6$
+        \State $C_{12} \gets P_1 + P_2$
+        \State $C_{21} \gets P_3 + P_4$
+        \State $C_{22} \gets P_1 + P_5 - P_3 - P_7$
+
+        {~~~}
+
+        \State \Return $C$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\subsection{Median and Selection}
+
+\begin{listu}
+    \item \textbf{Selection}
+    
+    \begin{listu}
+        \item Given an array $A$ of $n$ comparable elements, find the $k$-th smallest element in $A$. 
+        \item $k = 1$ is the minimum, $k = n$ is the maximum, and $k = \floor{\frac{n}{2}}$ is the median. 
+        \item The running time is $\mathcal{O}(n)$ for minimum and maximum. 
+    \end{listu}
+
+    \item \textbf{$k$-Selection}
+
+    \begin{listu}
+        \item $\bigo{nk}$ by modifying bubble sort.
+        \item $\bigo{n \log n}$ by sorting. 
+        \item $\bigo{n + k \log n}$ by using a min-heap.
+        \item $\bigo{k + n \log k}$ by using a max-heap.
+        \item $\bigo{n}$ by using the divide and conquer paradigm.
+    \end{listu}
+\end{listu}
+
+\subsubsection{QuickSelect}
+
+\begin{listu}
+    \item \textbf{Divide}: Pick a pivot $p$ at random from $A$
+
+    \item \textbf{Conquer}: Partition $A$ into two sub-arrays 
+    
+    \begin{listu}
+        \item $A_{less}$ contains all elements less than $p$
+        \item $A_{more}$ contains all elements greater than $p$
+    \end{listu}
+
+    \item \textbf{Combine}: 
+    \begin{listu}
+        \item If $|A_{less}| \ge k$, return $k$-th smallest element in $A_{less}$
+        \item Otherwise, return $(k - |A_{less}|)$-th smallest element in $A_{more}$
+    \end{listu}
+\end{listu}
+
+However, this algorithm is not guaranteed to be $\mathcal{O}(n)$, as the pivot may be the largest or smallest element in the array. If pivot is close to the min or the max, then we basically get $T(n) \le T(n - 1) + \bigo{n}$, which is $\bigo{n^2}$. We want to reduce $n - 1$ to a fraction of $n$. 
+
+% TODO

@@ -1,11 +1,12 @@
 % ------------------
 % Packages
 % ------------------
+\usepackage[export]{adjustbox}
 \usepackage[english]{babel}
 \usepackage[T1]{fontenc}
 \usepackage[scaled]{helvet}
 \usepackage[utf8]{inputenc}
-\usepackage[letterpaper]{geometry}
+\usepackage[letterpaper,top=1in,bottom=1in,inner=1.25in,outer=1in]{geometry}
 \usepackage[dvipsnames]{xcolor}
 
 \usepackage{algorithm}
@@ -27,9 +28,14 @@
 \usepackage{wrapfig}
 \usepackage{xparse}
 
+
 % ------------------
 % Shortcuts
 % ------------------
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\ceil}[1]{\lceil #1\rceil}
+
+\newcommand{\bigo}[1]{\ensuremath{\mathcal{O}\left(#1\right)}}
 
 % ------------------
 % Command Redefinitions
@@ -42,6 +48,22 @@
     \let\@ifnextchar\new@ifnextchar
     \array{#1}}
 \makeatother
+
+\algrenewcommand\algorithmicfunction{\textsc{\color{primary}Function}}
+\algrenewcommand\algorithmicif{\textsc{\color{primary}If}}
+\algrenewcommand\algorithmicelse{\textsc{\color{primary}Else}}
+\algrenewcommand\algorithmicreturn{\textsc{\color{primary}Return}}
+\algrenewcommand\algorithmicwhile{\textsc{\color{primary}While}}
+\algrenewcommand\algorithmicfor{\textsc{\color{primary}For}}
+
+\algrenewcommand\Call[2]{\textproc{\color{primary}\textsc{#1}}(#2)}
+
+\newcommand{\To}{\textsc{\color{primary}To}\xspace}
+
+\algtext*{EndIf}
+\algtext*{EndWhile}
+\algtext*{EndFor}
+\algtext*{EndFunction}
 
 % ------------------
 % Colors
@@ -88,7 +110,8 @@
 % ------------------
 \usetikzlibrary{external}
 \tikzexternalize[prefix=tikz/]
-\tikzset{external/only named=true}
+% \tikzset{external/only named=true}
+\tikzexternaldisable
 
 % ------------------
 % Boxes
@@ -150,6 +173,7 @@
 \newenvironment{corollary}[1][]   {\begin{Corollary}{#1}{}}                               {\end{Corollary}}
 \newenvironment{definition}[1][]  {\begin{Defi}{#1}{}}                                    {\end{Defi}}
 \newenvironment{lemma}[1][]       {\begin{Lemma}{#1}{}}                                   {\end{Lemma}}
+\newenvironment{lemma*}[1][]      {\begin{Lemma*}{#1}{}}                                  {\end{Lemma*}}
 \newenvironment{proposition}[1][] {\begin{Propo}{#1}{}}                                   {\end{Propo}}
 \newenvironment{remark}[1][]      {\begin{Remark}{#1}{}}                                  {\end{Remark}}
 \newenvironment{theorem}[1][]     {\begin{Theorem}{#1}{}}                                 {\end{Theorem}}
