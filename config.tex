@@ -37,6 +37,13 @@
 
 \newcommand{\bigo}[1]{\ensuremath{\mathcal{O}\left(#1\right)}}
 
+\usetikzlibrary{decorations.pathmorphing}
+\newcommand{\zigzagarrow}{
+    \tikz{
+        \draw[->, decorate, decoration={zigzag, segment length=4, amplitude=.9, post=lineto, post length=2pt}] (0,0) -- (0.5,0);
+    }
+}
+
 % ------------------
 % Command Redefinitions
 % ------------------
@@ -84,12 +91,13 @@
 \definecolor{lightRed}{rgb}{1.0, 0.50, 0.50}
 \definecolor{darkGreen}{rgb}{0.31, 0.54, 0.30}
 \definecolor{violet}{RGB}{186, 153, 242}
+\definecolor{darkRed}{HTML}{BF0813}
 
 %----------------
 %	Text Styles
 %----------------
 \DeclareTextFontCommand{\term}{\color{orange}\bfseries}
-\DeclareTextFontCommand{\bred}{\color{red}\bfseries}
+\DeclareTextFontCommand{\bred}{\color{darkRed}\bfseries}
 \DeclareTextFontCommand{\itblue}{\color{lightBlue}\itshape}
 
 \DeclareTextFontCommand{\vector}{\bfseries\itshape}

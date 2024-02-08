@@ -17,7 +17,7 @@
     \end{listu}
 \end{listu}
 
-\section{Interval Scheduling}
+\section{Interval Scheduling}\label{sec:interval-scheduling}
 
 \subsection{Problem Definition}
 
@@ -891,8 +891,33 @@ The running time of the Huffman encoding algorithm is $\mathcal{O}(n \log n)$. H
 
 \section{Other Greedy Algorithms}
 
-Some other greedy algorithms include
-\begin{listu}
-    \item \textbf{Shortest Path:} Dijkstra's algorithm
-    \item \textbf{Minimum Spanning Tree:} Kruskal's algorithm and Prim's algorithm
-\end{listu}
+\subsection{Dijkstra's Algorithm}\label{subsec:dijkstras-algorithm}
+
+Dijsktra's algorithm is a greedy algorithm that finds the \itblue{shortest path} from a single source to all other vertices in a weighted graph. 
+
+\begin{algorithm}[ht!]
+    \begin{algorithmic}[1]
+        \Function{Dijkstra}{$G, s$}
+            \State $d[v] \gets \infty$ for all $v \in V$
+            \State $d[s] \gets 0$
+            \State $Q \gets \text{Priority-Queue}$
+            \State \Call{Insert}{$Q, s, 0$}
+            \While{$Q$ is not empty}
+                \State $(u, d_u) \gets \text{Extract-Min}(Q)$
+                \For{each edge $(u, v)$}
+                    \If{$d_u + w(u, v) < d[v]$}
+                        \State $d[v] \gets d_u + w(u, v)$
+                        \State \Call{Insert}{$Q, v, d[v]$}
+                    \EndIf
+                \EndFor
+            \EndWhile
+            \State \Return $d$
+        \EndFunction
+    \end{algorithmic}
+\end{algorithm}
+
+\subsection{Kruskal's Algorithm and Prim's Algorithm}
+
+Kruskal's algorithm and Prim's algorithm are greedy algorithms that finds a \itblue{minimum spanning tree} for a connected, undirected graph. 
+
+% TODO
