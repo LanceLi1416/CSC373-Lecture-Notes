@@ -9,20 +9,20 @@
 
 \term{Divide and Conquer}\index{Divide and Conquer} is a general algorithm design paradigm
 
-\begin{listu}
+\begin{itemize}
     \item \textbf{Divide} the problem into smaller subproblems of the same type.
     \item \textbf{Conquer} each subproblems recursively and independently.
     \item \textbf{Combine} solutions from subproblems and/or solve remaining part of the original problem.
-\end{listu}
+\end{itemize}
 
 \begin{example}[Merge Sort]
     \textsc{Merge-Sort} is a sorting algorithm that uses the divide and conquer paradigm.
 
-    \begin{listu}
+    \begin{itemize}
         \item \textbf{Divide}: Split the array into two halves
         \item \textbf{Conquer}: Sort the two halves recursively
         \item \textbf{Combine}: Merge the two sorted halves into a sorted array
-    \end{listu}
+    \end{itemize}
 \end{example}
 
 \begin{remark}
@@ -72,7 +72,6 @@ Merge sort is a sorting algorithm that uses the divide and conquer paradigm. It 
 \end{algorithm}
 
 \begin{center}
-    \tikzexternalenable
     \begin{tikzpicture}
         \node (root) at (0, 0) {$n$};
         \node (l) at (-2, -1)  {$\displaystyle \frac{n}{2^1}$};
@@ -95,7 +94,6 @@ Merge sort is a sorting algorithm that uses the divide and conquer paradigm. It 
         \draw (r) -- (rl);
         \draw (r) -- (rr);
     \end{tikzpicture}
-    \tikzexternaldisable
 \end{center}
 
 To compute the cost of \textsc{Merge-Sort}, we need to compute the cost of \textsc{Merge} and the cost of the levels. 
@@ -130,7 +128,7 @@ Then, the cost of \textsc{Merge-Sort} is \[
 \begin{proof}
     By induction on the number of iterations of \textsc{Merge-Sort}.
 
-    \begin{listu}
+    \begin{itemize}
         \item \textbf{Base case}: $s(2)$
         
         \textsc{BruteForceSort} is correct by construction.
@@ -142,7 +140,6 @@ Then, the cost of \textsc{Merge-Sort} is \[
         Without loss of generality, assume $L$ is a power of 2. For the other cases, some extra work is needed.
         
         \begin{center}
-            \tikzexternalenable
             \begin{tikzpicture}
                 \node (root) at (0, 0) {};
                 \filldraw (root) circle (2pt);
@@ -152,7 +149,6 @@ Then, the cost of \textsc{Merge-Sort} is \[
                 \draw (root) -- (l);
                 \draw (root) -- (r);
             \end{tikzpicture}
-            \tikzexternaldisable
         \end{center}
 
         If \textsc{Merge-Sort} is correct, then $s_1$ and $s_2$ are sorted.
@@ -164,28 +160,28 @@ Then, the cost of \textsc{Merge-Sort} is \[
         This implies that, in cases of mistake, then the order must have been wrong to start with. 
 
         This is a contradiction, as we assumed that \textsc{Merge-Sort} is correct for $L$ elements.
-    \end{listu}
+    \end{itemize}
 
     Thus, \textsc{Merge-Sort} is correct. 
 \end{proof}
 
 \subsection{Counting Inversions}
 
-\begin{listu}
+\begin{itemize}
     \item \textbf{Problem}
     
     Given an array $a$ of length $n$, count the number of pairs $(i, j)$ such that $i < j$ but $a[i] > a[j]$.
 
     \item \textbf{Applications}
     
-    \begin{listu}
+    \begin{itemize}
         \item Voting theory
         \item Collaborative filtering 
         \item Measuring the ``sortedness'' of an array
         \item Seneitivity analysis of Google's ranking function 
         \item \dots
-    \end{listu}
-\end{listu}
+    \end{itemize}
+\end{itemize}
 
 \begin{definition}[Inversion]\index{Inversion}\label{def:inversion}
     An \term{inversion} is a pair $(i, j)$ such that $i < j$ but $a[i] > a[j]$.
@@ -193,15 +189,15 @@ Then, the cost of \textsc{Merge-Sort} is \[
 
 The brute force algorithm is to check all pairs $(i, j)$ and count the number of inversions. This is $\mathcal{O}(n^2)$. We can do better by using the divide and conquer paradigm.
 
-\begin{listu}
+\begin{itemize}
     \item \textbf{Divide}: Split the array into two equal halves $x$ and $y$
     \item \textbf{Conquer}: Count the number of inversions in the two halves recursively
     \item \textbf{Combine}:
-    \begin{listu}
+    \begin{itemize}
         \item \itblue{Solve}: Count the number of inversions where $i \in x$ and $j \in y$
         \item \itblue{Merge}: Add the three counts together
-    \end{listu}
-\end{listu}
+    \end{itemize}
+\end{itemize}
 
 \begin{algorithm}    
     \begin{algorithmic}[1]
@@ -226,12 +222,12 @@ The brute force algorithm is to check all pairs $(i, j)$ and count the number of
 
 Counting inversions $i \in x$ and $j \in y$ is done by merging the two sorted halves.
 
-\begin{listu}
+\begin{itemize}
     \item Scan $x$ and $y$ in parallel from left to right
     \item If $x[i] \le y[j]$, then $x[i]$ is not an inversion
     If $x[i] > y[j]$, then $x[i]$ is an inversion with all elements in $y$ that have not been scanned yet
     \item Append the smaller element to the output array
-\end{listu}
+\end{itemize}
 
 \begin{algorithm}
     \begin{algorithmic}[1]
@@ -259,11 +255,11 @@ To formally prove correctness of \textsc{SortAndCount}, we can induce on the siz
 
 To analyze the running time of \textsc{SortAndCount}, 
 
-\begin{listu}
+\begin{itemize}
     \item Suppose $T(n)$ is the worst-case running time for inputs of size $n$
     \item Our algorithm satisfies $T(n) \le 2T(\frac{n}{2}) + \mathcal{O}(n)$
     \item Master theorem says this is $T(n) = \mathcal{O}(n \log n)$
-\end{listu}
+\end{itemize}
 
 \section{Master Theorem}
 
@@ -298,25 +294,25 @@ To analyze the running time of \textsc{SortAndCount},
 
 \subsection{Closest Pair}
 
-\begin{listu}
+\begin{itemize}
     \item \textbf{Problem}
     
     Given $n$ points of the form $(x_i, y_i)$ in the plane, find the closest pair of points.
 
     \item \textbf{Applications}
     
-    \begin{listu}
+    \begin{itemize}
         \item Basic primitive in graphics and computer vision
         \item Geographic information systems, molecular modeling, air traffic control
         \item Special case of nearest neighbor
-    \end{listu}
+    \end{itemize}
 
     \item \textbf{Brute force} is $\mathcal{O}(n^2)$.
-\end{listu}
+\end{itemize}
 
 We can use the divide and conquer paradigm to solve this problem.
 
-\begin{listu}
+\begin{itemize}
     \item \textbf{Divide}: Split the points into two equal halves by drawing a vertical line $L$ through the median $x$-coordinate
 
     \begin{center} \includegraphics[width=0.55\linewidth]{figures/Closest Pair Divide.png} \end{center}
@@ -329,14 +325,14 @@ We can use the divide and conquer paradigm to solve this problem.
 
     \begin{center} \includegraphics[width=0.55\linewidth]{figures/Closest Pair Conquer.png} \end{center}
 
-    \begin{listu}
+    \begin{itemize}
         \item Only need to look at points within $\delta$ of $L$ on each side
         \item Sort points on the strip by $y$ coordinate
         \item Only need to check each point with next 11 points in sorted list
-    \end{listu}
+    \end{itemize}
 
     \item Return the best of 3 solutions
-\end{listu}
+\end{itemize}
 
 \begin{remark}
     \begin{minipage}[t]{0.55\linewidth}
@@ -349,11 +345,11 @@ We can use the divide and conquer paradigm to solve this problem.
         \begin{proof}
             {~~~}
 
-            \begin{listu}
+            \begin{itemize}
                 \item No two points lie in the same $\frac{\delta}{2} \times \delta$ rectangle.
 
                 \item Two points that are more than two rows apart are at distance $\delta$.
-            \end{listu}
+            \end{itemize}
         \end{proof}
     \end{minipage}
     \hfill
@@ -363,11 +359,11 @@ We can use the divide and conquer paradigm to solve this problem.
 \end{remark}
 
 Let $T(n)$ be the worst-case running time of the algorithm. To analyze the Running time for the combine operation, 
-\begin{listu}
+\begin{itemize}
     \item Finding points on the strip is $\mathcal{O}(n)$
     \item Sorting points on the strip by their $y$-coordinate is $\mathcal{O}(n \log n)$
     \item Testing each point against 11 points is $\mathcal{O}(n)$
-\end{listu}
+\end{itemize}
 
 Thus, the total running running time is \[
     T(n) \le 2T\left( \frac{n}{2} \right) + \mathcal{O}(n \log n)
@@ -379,21 +375,21 @@ By the master theorem, this yields $T(n) = \mathcal{O}(n \log^2 n)$.
 
 \subsubsection{Karatsuba's Algorithm}\index{Karatsuba's Algorithm}\label{subsubsec:karatsuba}
 
-\begin{listu}
+\begin{itemize}
     \item \textbf{Problem}
     
     Given two $n$-bit integers $x$ and $y$, compute their product $xy$.
 
     \item \textbf{Applications}
     
-    \begin{listu}
+    \begin{itemize}
         \item Multiplying large integers
         \item Multiplying large polynomials
         \item Multiplying large matrices
-    \end{listu}
+    \end{itemize}
 
     \item \textbf{Brute force} is $\mathcal{O}(n^2)$.
-\end{listu}
+\end{itemize}
 
 Karatsuba's observed that we can divide each integer into two halves, \[
     x = x_1 \cdot 10^{\frac{n}{2}} + x_2  \qquad y = y_1 \cdot 10^{\frac{n}{2}} + y_2
@@ -409,7 +405,7 @@ Karatsuba's observed that we can divide each integer into two halves, \[
 
 Strassen's algorithm is a generalization of \hyperref[subsubsec:karatsuba]{Karatsuba's algorithm} to design a fast algorithm for multiplying two $n \times n$ matrices.
 
-\begin{listu}
+\begin{itemize}
     \item We call $n$ the ``size'' of the problem \[
         \begin{bmatrix}
             C_{11} & C_{12} \\
@@ -428,7 +424,7 @@ Strassen's algorithm is a generalization of \hyperref[subsubsec:karatsuba]{Karat
     \item Strassen's algorithm reduces this to $7$ matrix multiplications instead of $8$. \[
         T(n) \le 7T\left( \frac{n}{2} \right) + \mathcal{O}(n^2) \implies T(n) = \mathcal{O}(n^{\log_2 7}) \approx \mathcal{O}(n^{2.81})
     \]
-\end{listu}
+\end{itemize}
 \vspace{-2em}
 \begin{algorithm}
     \begin{algorithmic}[1]
@@ -465,44 +461,44 @@ Strassen's algorithm is a generalization of \hyperref[subsubsec:karatsuba]{Karat
 
 \subsection{Median and Selection}
 
-\begin{listu}
+\begin{itemize}
     \item \textbf{Selection}
     
-    \begin{listu}
+    \begin{itemize}
         \item Given an array $A$ of $n$ comparable elements, find the $k$-th smallest element in $A$. 
         \item $k = 1$ is the minimum, $k = n$ is the maximum, and $k = \floor{\frac{n}{2}}$ is the median. 
         \item The running time is $\mathcal{O}(n)$ for minimum and maximum. 
-    \end{listu}
+    \end{itemize}
 
     \item \textbf{$k$-Selection}
 
-    \begin{listu}
+    \begin{itemize}
         \item $\bigo{nk}$ by modifying bubble sort.
         \item $\bigo{n \log n}$ by sorting. 
         \item $\bigo{n + k \log n}$ by using a min-heap.
         \item $\bigo{k + n \log k}$ by using a max-heap.
         \item $\bigo{n}$ by using the divide and conquer paradigm.
-    \end{listu}
-\end{listu}
+    \end{itemize}
+\end{itemize}
 
 \subsubsection{QuickSelect}
 
-\begin{listu}
+\begin{itemize}
     \item \textbf{Divide}: Pick a pivot $p$ at random from $A$
 
     \item \textbf{Conquer}: Partition $A$ into two sub-arrays 
     
-    \begin{listu}
+    \begin{itemize}
         \item $A_{less}$ contains all elements less than $p$
         \item $A_{more}$ contains all elements greater than $p$
-    \end{listu}
+    \end{itemize}
 
     \item \textbf{Combine}: 
-    \begin{listu}
+    \begin{itemize}
         \item If $|A_{less}| \ge k$, return $k$-th smallest element in $A_{less}$
         \item Otherwise, return $(k - |A_{less}|)$-th smallest element in $A_{more}$
-    \end{listu}
-\end{listu}
+    \end{itemize}
+\end{itemize}
 
 However, this algorithm is not guaranteed to be $\mathcal{O}(n)$, as the pivot may be the largest or smallest element in the array. If pivot is close to the min or the max, then we basically get $T(n) \le T(n - 1) + \bigo{n}$, which is $\bigo{n^2}$. We want to reduce $n - 1$ to a fraction of $n$. 
 

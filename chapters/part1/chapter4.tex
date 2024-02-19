@@ -18,23 +18,23 @@
 
 \term{Dynamic programming}\index{Dynamic Programming} was developed by Richard Bellman in the 1950s, and is both a mathematical optimization method and a computer programming method. It is a method for solving complex problems by breaking them down into simpler subproblems, similar to the divide-and-conquer method, with the added benefit of storing the results of subproblems so that they are not recomputed. It is also more powerful than divide-and-conquer, as it can be used to solve problems where subproblems overlap.
 
-\begin{listu}
+\begin{itemize}
     \item Breaking the problem down into simpler subproblems, solve each subproblem just once, and store their solutions. 
     \item The next time the same subproblem occurs, instead of recomputing its solution, simply look up its previously computed solution.
     \item Hopefully, we save a lot of computation at the expense of modest increase in storage space. 
     \item Also called ``\bred{memoization}''.
-\end{listu}
+\end{itemize}
 
 \section{Weighted Interval Scheduling}
 
 \subsection{Problem Definition}
 
-\begin{listu}
+\begin{itemize}
     \item Job $j$ starts at time $s_j$ and finishes at time $f_j$.
     \item Each job $j$ has a weight $w_j$.
     \item Two jobs $i$ and $j$ are compatible if $f_i \leq s_j$.
     \item \textbf{Goal:} find a set $S$ of mutually compatible jobs that maximizes $\sum_{j \in S} w_j$.
-\end{listu}
+\end{itemize}
 
 If all the weights are equal, this is the same as the \hyperref[sec:interval-scheduling]{\textbf{interval scheduling}} problem. However, if the weights are not equal, the greedy algorithm for interval scheduling fails spectacularly.
 
@@ -62,23 +62,23 @@ What if we use other orderings? We can order the jobs by weight and choose the o
 
 \subsubsection{Convention}
 
-\begin{listu}
+\begin{itemize}
     \item Jobs are sorted by finish time: $f_1 \leq f_2 \leq \ldots \leq f_n$.
     \item $p[j] = \max\{i: i < j \text{ and } f_i < s_j\}$, the largest $i < j$ such that job $i$ is compatible with job $j$.
-    \begin{listu}
+    \begin{itemize}
         \item Jobs $1, \dots, i$ are compatible with $j$, but jobs $i + 1, \dots j - 1$ are not.
         \item $p[j]$ can be computed via binary search in $O(\log n)$ time.
-    \end{listu}
-\end{listu}
+    \end{itemize}
+\end{itemize}
 
 \subsection{Dynamic Programming Solution}
 
-\begin{listu}
+\begin{itemize}
     \item Let OPT be an optimal solution to the problem.
 
     \item There are two options for job $n$:
 
-    \begin{listu}
+    \begin{itemize}
         \item Job $n$ is in OPT
 
         We cannot use the incompatible jobs $\{ p[n] + 1, \dots, n - 1 \}$
@@ -88,7 +88,7 @@ What if we use other orderings? We can order the jobs by weight and choose the o
         \item Job $n$ is not in OPT
 
         Must select the optimal solution for the remaining jobs $\{1, \dots, n - 1\}$.
-    \end{listu}
+    \end{itemize}
 
     \item OPT is the best of these two options.
 
@@ -100,10 +100,10 @@ What if we use other orderings? We can order the jobs by weight and choose the o
 
     \item \textbf{Recurrence:} $OPT(j) = \max\{w_j + OPT(p[j]), OPT(j - 1)\}$.
 
-    \begin{listu}
+    \begin{itemize}
         \item Job $j$ is selected: optimal weight is $w_j + OPT(p[j])$.
         \item Job $j$ is not selected: optimal weight is $OPT(j - 1)$.
-    \end{listu}
+    \end{itemize}
 
     The \term{Bellman equation} is \[
         OPT(j) = \begin{cases}
@@ -111,7 +111,7 @@ What if we use other orderings? We can order the jobs by weight and choose the o
             \max\{w_j + OPT(p[j]), OPT(j - 1)\} & \text{if } j > 0
         \end{cases}
     \]
-\end{listu}
+\end{itemize}
 
 \newpage
 \begin{example}[Brute Force Solution]
@@ -170,16 +170,16 @@ Let's store \textsc{Store-Opt}$(j)$ in an array $M[j]$.
     This memoized version takes $\mathcal{O}(n \log n)$ time.
 \end{claim}
 
-\begin{listu}
+\begin{itemize}
     \item Sorting by finish time takes $\mathcal{O}(n \log n)$ time.
     \item Computing $p[1], \dots, p[n]$ takes $\mathcal{O}(n \log n)$ time.
     \item For each $j$, at most one of the calls to \textsc{M-Compute-Opt}$(j)$ will make two recursive calls.
-    \begin{listu}
+    \begin{itemize}
         \item At most $\mathcal{O}(n)$ total calls to \textsc{M-Compute-Opt}.
         \item Each call takes $\mathcal{O}(1)$ time, not considering the time spent in the recursive calls. 
         \item Hence, the initial call, \textsc{M-Compute-Opt}$(n)$, finished in $\mathcal{O}(n)$ time.
-    \end{listu}
-\end{listu}
+    \end{itemize}
+\end{itemize}
 
 \subsubsection{Bottom Up Dynamic Programming}
 
@@ -201,20 +201,20 @@ In bottom up dynamic programming, we need to find an order in which to call the 
 
 \subsubsection{Top-Down vs. Bottom-Up}
 
-\begin{listu}
+\begin{itemize}
     \item Top-Down may be preferred\dots
-    \begin{listu}
+    \begin{itemize}
         \item {\dots}when not all sub-solutions need to be computed on some inputs
         \item {\dots}because one does not need to think of the ``right order'' in which to compute sub-solutions
-    \end{listu}
+    \end{itemize}
 
     \item Bottom-Up may be preferred\dots
-    \begin{listu}
+    \begin{itemize}
         \item {\dots}when all sub-solutions will anyway need to be computed
         \item {\dots}because it is faster as it prevents recursive call overheads and unnecessary random memory accesses
         \item {\dots}because sometimes we can free-up memory early
-    \end{listu}
-\end{listu}
+    \end{itemize}
+\end{itemize}
 
 \subsubsection{Optimal Solution Reconstruction}
 
@@ -244,11 +244,11 @@ One may notice that this implementation is wasting a lot of space. We are copyin
 \] where we store only one bit of information for each $j$: which option yielded the maximum weight. 
 
 To reconstruct the optimal solution, start with $j = n$:
-\begin{listu}
+\begin{itemize}
     \item If $S(j) = L$, update $j \gets j - 1$.
     \item If $S(j) = R$, add job $j$ to the solution and update $j \gets p[j]$.
     \item If $S(j) = \perp$, stop.
-\end{listu}
+\end{itemize}
 
 \subsection{Optimal Substructure Property}
 
@@ -264,31 +264,31 @@ Dynamic programming applies well to problems that have optimal substructure prop
 
 \subsection{Problem Definition}
 
-\begin{listu}
+\begin{itemize}
     \item There are $n$ items, each provides a value $v_i > 0$ and a weight $w_i > 0$.
     \item There is a knapsack that can hold a maximum weight of $W$.
     \item Assume that $W, v_i$-s, and $w_i$-s are all integers.
     \item \textbf{Goal:} pack the knapsack with a subset of items with highest total value subject to their total weight being at most $W$. 
-\end{listu}
+\end{itemize}
 
 \subsection{Dynamic Programming Solution}
 
-\begin{listu}
+\begin{itemize}
     \item Let $OPT(i, w)$ be the maximum value we can pack using only items $1, \dots, i$ in s knapsack of capacity $w$.
     
     \textbf{Goal:} compute $OPT(n, W)$.
 
     \item Consider item $i$ 
     
-    \begin{listu}
+    \begin{itemize}
         \item If $w_i > w$, then we can't choose $i$. Use $OPT(i - 1, w)$.
         \item If $w_i \leq w$, then we have two options:
-        \begin{listu}
+        \begin{itemize}
             \item If we choose $i$, then the best value is $v_i + OPT(i - 1, w - w_i)$.
             \item If we don't choose $i$, then the best value is $OPT(i - 1, w)$.
-        \end{listu}
-    \end{listu}
-\end{listu} 
+        \end{itemize}
+    \end{itemize}
+\end{itemize} 
 
 \[
     OPT(i, w) = \begin{cases}
@@ -301,7 +301,7 @@ Dynamic programming applies well to problems that have optimal substructure prop
 \subsubsection{Running Time}
 
 Consider the possible evaluations of $OPT(i, w)$
-\begin{listu}
+\begin{itemize}
     \item $i \in \{ 1, \dots, n \}$
     \item $w \in \{ 0, \dots, W \}$
     \item There are $\mathcal{O}(n \cdot W)$ possible evaluations of $OPT(i, w)$.
@@ -309,7 +309,7 @@ Consider the possible evaluations of $OPT(i, w)$
     Each is computed in $\mathcal{O}(1)$ time, at most once. 
 
     \item The total running time is $\mathcal{O}(n \cdot W)$.
-\end{listu}
+\end{itemize}
 
 This is a \term{pseudo-polynomial time} algorithm. The time is not polynomial in \[ \log W + \sum_{i=1}^n (\log v_i + \log w_i), \] the number of bits required to represent the input, but it is polynomial in the numeric value of the input in unary representation.
 
@@ -337,18 +337,18 @@ This is a \term{pseudo-polynomial time} algorithm. The time is not polynomial in
 
 In this solution, we will focus on the values instead of the weights.
 
-\begin{listu}
+\begin{itemize}
     \item Let $OPT(i, v)$ be the minimum weight we need to achieve a value of at least $v$ using only items $1, \dots, i$.
 
     \textbf{Goal:} compute $OPT(n, V)$, where $V = \sum_{i=1}^n v_i$.
 
     \item Consider item $i$.
 
-    \begin{listu}
+    \begin{itemize}
         \item If we choose $i$, then the best weight is $w_i + OPT(i - 1, v - v_i)$.
         \item If we don't choose $i$, then the best weight is $OPT(i - 1, v)$.
-    \end{listu}
-\end{listu} \[
+    \end{itemize}
+\end{itemize} \[
     OPT(i, v) = \begin{cases}
         0                                                & \text{if } i = 0   \\
         OPT(i - 1, v)                                    & \text{if } v_i > v \\
@@ -364,10 +364,10 @@ This approach has a running time of $\mathcal{O}(n \cdot V)$, which is also pseu
 
 \subsection{Problem Definition}
 
-\begin{listu}
+\begin{itemize}
     \item A directed graph $G = (V, E)$ with edge lengths $\ell_{vw}$ on each edge $(v, w)$, and s source vertex $s$.
     \item \textbf{Goal:} compute the shortest path from $s$ to every other vertex $t$.
-\end{listu}
+\end{itemize}
 
 When $\ell_{vw} \ge 0$ for all edges, we can use \hyperref[subsec:dijkstras-algorithm]{Dijkstra's algorithm}. However, when $\ell_{vw}$ can be negative, Dijkstra's algorithm does not work. 
 
@@ -395,16 +395,16 @@ To avoid this issue, we need to restrict the graph to avoid negative cycles.
 
 Consider a simple shortest path $P$ from $s$ to $t$.
 
-\begin{listu}
+\begin{itemize}
     \item It could be just a single edge. But if $P$ has more than one edges, consider $u$ which immediately precedes $t$ in the path. 
     \item If $s \leadsto t$ is the shortest, $s \leadsto u$ must also be the shortest, and it must use one fewer edge than $s \leadsto t$.
-\end{listu}
+\end{itemize}
 
 Let $OPT(t, i)$ be the length of the shortest path from $s$ to $t$ using at most $i$ edges. Then,
-\begin{listu}
+\begin{itemize}
     \item Either this path uses at most $i - 1$ edges, so $OPT(t, i) = OPT(t, i - 1)$, or
     \item It uses $i$ edges, so $\displaystyle OPT(t, i) = \min_{u} OPT(u, i - 1) + \ell_{ut}$.
-\end{listu} \[
+\end{itemize} \[
     OPT(t, i) = \begin{cases} 
         0                                                                     & \text{if } i = 0 \text{ or } t = s    \\
         \infty                                                                & \text{if } i = 0 \text{ and } t \ne s \\
@@ -421,10 +421,10 @@ There are $\mathcal{O}(n^2)$ entries to evaluate, and each entry takes $\mathcal
 
 \subsubsection{Problem Definition}
 
-\begin{listu}
+\begin{itemize}
     \item A directed graph $G = (V, E)$ with edge lengths $\ell_{vw}$ on each edge $(v, w)$.
     \item \textbf{Goal:} compute the shortest path from every vertex $s$ to every other vertex $t$.
-\end{listu}
+\end{itemize}
 
 An na\"ive approach may be to run the previous algorithm for each vertex $s$. However, this approach has a running time of $\mathcal{O}(n^4)$, while it is possible to solve the problem in $\mathcal{O}(n^3)$ time.
 
@@ -439,10 +439,10 @@ Let $OPT(u, v, k)$ be the length of the shortest simple path from $u$ to $v$ usi
 
 \subsection{Problem Definition}
 
-\begin{listu}
+\begin{itemize}
     \item Given matrices $M_1, \dots, M_n$, where the dimensions of $M_i$ are $d_{i - 1} \times d_i$.
     \item \textbf{Goal:} compute the product $M_1 \cdot M_2 \cdot \dots \cdot M_n$. 
-\end{listu}
+\end{itemize}
 
 We know that matrix multiplication is associative, so the order of multiplication does not matter. However, the number of scalar multiplications required to compute the product does depend on the order of multiplication. Assume we use the brute force approach for matrix multiplication. Multiplying $p \times q$ and $q \times r$ matrices requires $p \cdot q \cdot r$ scalar multiplications.
 
@@ -453,11 +453,11 @@ We know that matrix multiplication is associative, so the order of multiplicatio
 \subsubsection{Optimal Substructure}
 
 We can use dynamic programming to solve this problem, as it has the optimal substructure property.
-\begin{listu}
+\begin{itemize}
     \item Think of the final product computed, say $A \cdot B$
     \item $A$ is the product of some prefix, $B$ is the product of the remaining suffix
     \item For the overall optimal computation, each of $A$ and $B$ should be computed optimally
-\end{listu}
+\end{itemize}
 
 
 Let $OPT(i, j)$ be the minimum number of scalar multiplications required to compute the product $M_i \cdot M_{i + 1} \cdot \dots \cdot M_j$. Then, \[
@@ -499,45 +499,45 @@ Suppose we can {\color{lightBlue}delete} or {\color{darkGreen}replace} symbols, 
     \end{figure}
 \end{example}
 
-\begin{listu}
+\begin{itemize}
     \item \textbf{input}
 
-    \begin{listu}
+    \begin{itemize}
         \item Strings $X = x_1 x_2 \dots x_m$ and $Y = y_1 y_2 \dots y_n$.
         \item Cost $d(a)$ of deleting symbol $a$.
         \item Cost $r(a, b)$ of replacing symbol $a$ with symbol $b$.
         
         We assume $r(a, b) = r(b, a)$ and $r(a, a) = 0$, for all $a, b$.
-    \end{listu}
+    \end{itemize}
 
     \item \textbf{Goal}
 
     Compute the minimum total cost for matching $X$ and $Y$.
-\end{listu}
+\end{itemize}
 
 \subsection{Dynamic Programming Solution}
 
 \subsubsection{Optimal Substructure}
 
-\begin{listu}
+\begin{itemize}
     \item \textbf{Goal:} match $x_1, \dots, x_m$ with $y_1, \dots, y_n$.
 
     \item Consider the last symbols $x_m$ and $y_n$.
 
     \item There are three options:
     
-    \begin{listu}
+    \begin{itemize}
         \item {\color{lightBlue}Delete} $x_m$, and optimally match $x_1, \dots, x_{m - 1}$ with $y_1, \dots, y_n$.
         \item {\color{lightBlue}Delete} $y_n$, and optimally match $x_1, \dots, x_m$ with $y_1, \dots, y_{n - 1}$.
         \item {\color{darkGreen}Match} $x_m$ and $y_n$, and optimally match $x_1, \dots, x_{m - 1}$ with $y_1, \dots, y_{n - 1}$.
-        \begin{listu}
+        \begin{itemize}
             \item We increase the cost by $r(x_m, y_n)$ if $x_m \ne y_n$.
             \item Recall that $r(a, a) = 0$, so we don't increase the cost if $x_m = y_n$.
-        \end{listu}
-    \end{listu}
+        \end{itemize}
+    \end{itemize}
 
     \item Hence in the dynamic programming, we need to compute the optimal solutions for matching prefixes of $X$ and $Y$, $x_1, \dots, x_i$ and $y_1, \dots, y_j$.
-\end{listu}
+\end{itemize}
 
 Let $E[i, j]$ be the distance between $x_1, \dots, x_i$ and $y_1, \dots, y_j$. Then, \[
     E[i, j] = \begin{cases}
@@ -562,11 +562,11 @@ There are $\mathcal{O}(m \cdot n)$ entries to evaluate, and each entry takes $\m
 
 The current solution uses $\mathcal{O}(m \cdot n)$ space. However, we can optimize the space complexity of the dynamic programming solution by using a bottom up approach. 
 
-\begin{listu}
+\begin{itemize}
     \item While computing $E[\cdot,j]$, we only need to store $E[\cdot,j]$ and $E[\cdot,j-1]$, so the additional space required is $\mathcal{O}(m)$.
     \item By storing two rows at a time instead, we can make it $\mathcal{O}(n)$.
     \item Usually, we include the storage of inputs, so both are $\mathcal{O}(m + n)$.
-\end{listu}
+\end{itemize}
 
 However, this is not enough if we want to compute the actual solution. \href{https://en.wikipedia.org/wiki/Hirschberg%27s_algorithm}{Hirschberg's algorithm} is a space-optimized version of the dynamic programming solution that can compute the actual solution in $\mathcal{O}(m + n)$ space.
 
@@ -576,13 +576,13 @@ However, this is not enough if we want to compute the actual solution. \href{htt
 
 \subsection{Problem Definition}
 
-\begin{listu}
+\begin{itemize}
     \item A complete graph $G = (V, E)$ with distance $d_{i, j}$ from vertex $i$ to vertex $j$.
     
     Note that the input needs to satisfy the triangle inequality: $d_{i, j} \le d_{i, k} + d_{k, j}$ for all $i, j, k$.
 
     \item \textbf{Goal:} find the shortest cycle that visits every vertex exactly once. This is called the \term{Hamiltonian cycle}.
-\end{listu}
+\end{itemize}
 
 We start at node $v_1 = 1$, and want to visit other nodes in some order, say $v_2, v_3, \dots, v_n, v_1$. The total distance is \[
     d_{1, v_2} + d_{v_2, v_3} + \dots + d_{v_{n-1}, v_n} + d_{v_n, 1},
@@ -615,13 +615,13 @@ There are $\mathcal{O}(n \cdot 2^n)$ entries to evaluate, and each entry takes $
 \subsection{Space Optimization}
 
 The space complexity of the dynamic programming solution is $\mathcal{O}(n \cdot 2^n)$, which is the same as implementing the solution na\"ively. However, we can optimize by using a bottom up approach, as we do not need the entire table at any given time -- computing the optimal solution with $|S| = k$ only requires storing the optimal solution with $|S| = k - 1$. By doing so, we can reduce the space complexity to approximately \[
-    \mathcal{O} \left( n \cdot \binom{n}{n/2} \right) \approx \mathcal{O} \left(  \right).
+    \mathcal{O} \left( n \cdot \binom{n}{n/2} \right) \approx \mathcal{O} \left( \sqrt{n} \cdot 2^n \right).
 \]
 
 \section{Remarks}
 
 High-level steps in designing a DP algorithm
-\begin{listu}
+\begin{itemize}
     \item Focus on a single decision in optimal solution. Typically, this is the first or the last decision. 
 
     \item For each possible way of making that decision, [optimal substructure] write the optimal solution of the problem in terms of the optimal solutions to subproblems
@@ -633,4 +633,4 @@ High-level steps in designing a DP algorithm
     \item Write the Bellman equation, cover your base cases 
 
     \item Think about optimizing the running time/space using tricks. This is often easier in the bottom-up implementation
-\end{listu}
+\end{itemize}

@@ -4,51 +4,51 @@
 
 \term{Greedy algorithms} are a class of algorithms that make locally optimal choices at each step in order to find a global optimum. They are often used to solve optimization problems.
 
-\begin{listu}
+\begin{itemize}
     \item \textbf{Goal:} find a solution $x$ maximizing or minimizing some objective function $f$.
     \item \textbf{Challenge:} space of possible solutions $x$ is too large to search exhaustively.
     \item \textbf{Insight:} $x$ is composed of several parts (e.g., $x$ is a set or a sequence).
     \item \textbf{Approach:} instead of computing $x$ directly,
-    \begin{listu}
+    \begin{itemize}
         \item Compute $x$ one part at a time.
         \item Select the next part ``greedily'' to get the most immediate ``benefit'', which needs to be defined carefully for each problem.
         \item Polynomial running time is typically guaranteed.
         \item Need to prove that this will always return an optimal solution despite having no global view of the problem.
-    \end{listu}
-\end{listu}
+    \end{itemize}
+\end{itemize}
 
 \section{Interval Scheduling}\label{sec:interval-scheduling}
 
 \subsection{Problem Definition}
 
-\begin{listu}
+\begin{itemize}
     \item Job $j$ starts at time $s_j$ and finishes at time $f_j$.
     \item Two jobs $i$ and $j$ are compatible if $[s_i, f_i)$ and $[s_j, f_j)$ do not overlap.
     \item \textbf{Goal:} find a maximum-size subset of mutually compatible jobs.
-\end{listu}
+\end{itemize}
 
 \subsection{Greedy Algorithm}
 
 The greedy algorithm for interval scheduling follows the template
-\begin{listu}
+\begin{itemize}
     \item Consider jobs in some ``natural'' order.
     \item Take a job if it is compatible with the ones already taken.
-\end{listu}
+\end{itemize}
 
 But, what is the ``natural'' order?
-\begin{listu}
+\begin{itemize}
     \item \textbf{Earliest start time:} ascending order of $s_j$.
     \item \textbf{Earliest finish time:} ascending order of $f_j$.
     \item \textbf{Shortest interval:} ascending order of $f_j - s_j$.
     \item \textbf{Fewest conflicts:} ascending order of $c_j$, where $c_j$ is the number of remaining jobs that conflicts with job $j$.
-\end{listu}
+\end{itemize}
 
 However, not all of these orders will yield the optimal solution. Below are some counterexamples.
 
 {~~~}
 
 \begin{minipage}[t]{0.55\linewidth}
-    \begin{center} \tikzexternalenable \begin{tikzpicture}[baseline=(current bounding box.center)]
+    \begin{center} \begin{tikzpicture}[baseline=(current bounding box.center)]
         \definecolor{lightGray}{gray}{0.7}
         \definecolor{darkGray}{gray}{0.5}
 
@@ -58,7 +58,7 @@ However, not all of these orders will yield the optimal solution. Below are some
         \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.25cm] at (4.5, 0) {};
 
         \node[draw=none, fill=darkGray, minimum width=6.5cm, minimum height=0.25cm] at (2.25, -0.375) {};
-    \end{tikzpicture} \tikzexternaldisable \end{center}
+    \end{tikzpicture} \end{center}
 \end{minipage}
 \begin{minipage}[t]{0.35\linewidth}
     \begin{center}
@@ -71,7 +71,7 @@ However, not all of these orders will yield the optimal solution. Below are some
 {~~~}
 
 \begin{minipage}[t]{0.55\linewidth}
-    \begin{center} \tikzexternalenable \begin{tikzpicture}[baseline=(current bounding box.center)]
+    \begin{center} \begin{tikzpicture}[baseline=(current bounding box.center)]
         \definecolor{lightGray}{gray}{0.7}
         \definecolor{darkGray}{gray}{0.5}
 
@@ -79,7 +79,7 @@ However, not all of these orders will yield the optimal solution. Below are some
         \node[draw=none, fill=lightGray, minimum width=2cm, minimum height=0.25cm] at (2.5, 0) {};
 
         \node[draw=none, fill=darkGray, minimum width=1.5cm, minimum height=0.25cm] at (1.25, -0.375) {};
-    \end{tikzpicture} \tikzexternaldisable \end{center}
+    \end{tikzpicture} \end{center}
 \end{minipage}
 \begin{minipage}[t]{0.35\linewidth}
     \begin{center}
@@ -92,7 +92,7 @@ However, not all of these orders will yield the optimal solution. Below are some
 {~~~}
 
 \begin{minipage}[t]{0.55\linewidth}
-    \begin{center} \tikzexternalenable \begin{tikzpicture}[baseline=(current bounding box.center)]
+    \begin{center} \begin{tikzpicture}[baseline=(current bounding box.center)]
         \definecolor{lightGray}{gray}{0.7}
         \definecolor{darkGray}{gray}{0.5}
 
@@ -110,7 +110,7 @@ However, not all of these orders will yield the optimal solution. Below are some
         \node[draw=none, fill=lightGray, minimum width=1cm, minimum height=0.25cm] at (3.75, -1.125) {};
 
         \node[draw=none, fill=darkGray, minimum width=1cm, minimum height=0.25cm] at (2.25, -0.375) {};
-    \end{tikzpicture} \tikzexternaldisable \end{center}
+    \end{tikzpicture} \end{center}
 \end{minipage}
 \begin{minipage}[t]{0.35\linewidth}
     \begin{center}
@@ -122,32 +122,32 @@ However, not all of these orders will yield the optimal solution. Below are some
 
 We can implement the greedy algorithm using \bred{earliest finish time order} (EFT).
 
-\begin{listu}
+\begin{itemize}
     \item Sort jobs by finish time, say $f_1 \le f_2 \le \dots \le f_n$. \[
         \mathcal{O}(n \log n)
     \]
 
     \item For each job $j$, we need to check if it's compatible will \itblue{all} previously added jobs.
 
-    \begin{listu}
+    \begin{itemize}
         \item Natively, this is $\mathcal{O}(n^2)$, as we need $\mathcal{O}(n)$ for each job.
         \item We only need to check if $s_j \ge f_{i^*}$, where $i^*$ is the \itblue{last job added}.
-        \begin{listu}
+        \begin{itemize}
             \item For any jobs $i$ added before $i^*$, we have $f_i \le f_{i^*}$.
             \item By keeping track of $f_{i^*}$, we can check compatibility of job $j$ in $\mathcal{O}(1)$.
-        \end{listu}
-    \end{listu}
+        \end{itemize}
+    \end{itemize}
 
     \item Thus, the total running time is \[
         \mathcal{O}(n \log n).
     \]
-\end{listu}
+\end{itemize}
 
 \subsection{Proof of Optimality}
 
 \subsubsection{By Contradiction}
 
-\begin{listu}
+\begin{itemize}
     \item Suppose for contradiction that greedy is not optimal
 
     \item Say greedy selects jobs $i_1, i_2, \dots, i_k$ sorted by finish time
@@ -160,13 +160,13 @@ We can implement the greedy algorithm using \bred{earliest finish time order} (E
 
     \item Consider a new solution $i_1, i_2, \dots, i_r, {\color{red}j_{r+1}}, {\color{lightBlue}j_{r+2}, \dots, j_m}$.
 
-    \begin{listu}
+    \begin{itemize}
         \item We have replaced $j_{r+1}$ by $i_{r+1}$ in our reference optimal solution
         \item This is still \bred{feasible} because $f_{i_{r+1}} \le f_{j_{r+1}} \le s_{j_{t}}$ for $t \ge r+2$.
         \item This is still \bred{optimal} because $m$ jobs are sorted.
         \item But it matched the greedy solution in $r + 1$ indices. This is a contradiction.
-    \end{listu}
-\end{listu}
+    \end{itemize}
+\end{itemize}
 
 \begin{center}
     \includegraphics[width=0.67\linewidth]{figures/interval-scheduling-contradiction.png}
@@ -174,7 +174,7 @@ We can implement the greedy algorithm using \bred{earliest finish time order} (E
 
 \subsubsection{By Induction}
 
-\begin{listu}
+\begin{itemize}
     \item Let $S_j$ be the subset of jobs picked by greedy after considering the first $j$ jobs in the increasing order of finish time.
 
     Define $S_0 = \varnothing$.
@@ -185,11 +185,11 @@ We can implement the greedy algorithm using \bred{earliest finish time order} (E
 
     \item \bred{Inductive claim:} for all $t \in \{0, 1, \dots, n\}$, $S_t$ is promising.
 
-    \begin{listu}
+    \begin{itemize}
         \item For $t = n$, if $S_n$ is promising, then it must be an optimal solution.
 
         \item We choose $t = 0$ as our base case since it is trivially promising.
-    \end{listu}
+    \end{itemize}
 
     \item \textbf{Base case:} $t = 0$.
 
@@ -201,29 +201,29 @@ We can implement the greedy algorithm using \bred{earliest finish time order} (E
 
     At $t = j$, we have two cases:
 
-    \begin{listo}
+    \begin{enumerate}
         \item Greedy did not select job $j$, so $S_j = S_{j-1}$.
 
-        \begin{listu}
+        \begin{itemize}
             \item Job $j$ must conflict with some job in $S_{j-1}$.
             \item Since $S_{j-1} \subseteq O_{j-1}$, $O_{j-1}$ also include pick job $j$.
             \item $O_j = O_{j-1}$ also extends $S_j = S_{j-1}$.
-        \end{listu}
+        \end{itemize}
 
         \item Greedy selected job $j$, so $S_j = S_{j-1} \cup \{j\}$.
 
-        \begin{listu}
+        \begin{itemize}
             \item Consider the earliest job $r$ in $O_{j-1} \setminus S_{j-1}$.
             \item Consider $O_j$ contained by replacing $r$ with $j$ in $O_{j-1}$.
             \item Prove that $O_j$ is still feasible.
             \item $O_j$ extends $S_j$, as desired.
-        \end{listu}
+        \end{itemize}
 
         \begin{center}
             \includegraphics[width=0.67\linewidth]{figures/interval-scheduling-induction.png}
         \end{center}
-    \end{listo}
-\end{listu}
+    \end{enumerate}
+\end{itemize}
 
 \subsubsection{Contradiction vs Induction}
 
@@ -234,20 +234,20 @@ Both methods make the same claim, that \begin{center}
 \end{minipage}
 \end{center}
 
-\begin{listu}
+\begin{itemize}
     \item For proof by induction, this is the key induction step.
     \item For proof by contradiction, we take the greatest $j$ for which the greedy solution can be extended to an optimal solution, and derive a contradiction by extending the greedy solution after $j + 1$ iterations.
-\end{listu}
+\end{itemize}
 
 \section{Interval Partitioning}
 
 \subsection{Problem Definition}
 
-\begin{listu}
+\begin{itemize}
     \item Job $j$ starts at time $s_j$ and finishes at time $f_j$.
     \item Two jobs are compatible if they do not overlap.
     \item \textbf{Goal:} group jobs into fewest partitions such that jobs in the same partition are compatible.
-\end{listu}
+\end{itemize}
 
 \begin{example}
     Think of scheduling lectures for various courses into as few classrooms as possible.
@@ -271,10 +271,10 @@ One idea to solve this problem is to find the maximum compatible set using the p
 
 The greedy algorithm for interval partitioning follows the template
 
-\begin{listu}
+\begin{itemize}
     \item Go through lectures in some ``natural'' order.
     \item Assign each lecture to an \itblue{arbitrary} compatible classroom, and create a new classroom if the lecture conflicts with every existing classroom
-\end{listu}
+\end{itemize}
 
 If later we figures that arbitrary assignment is not optimal, we may need to go back to this template, and use a more careful assignment strategy.
 
@@ -316,24 +316,24 @@ If later we figures that arbitrary assignment is not optimal, we may need to go 
 
 \subsubsection{Running Time}
 
-\begin{listu}
+\begin{itemize}
     \item \textbf{Key step:} checking if the next lecture can be scheduled at some classroom.
 
     \item We can tore classrooms in a priority queue, with the key being the latest finish time of any lecture in the classroom.
 
     \item Determining if lecture $j$ is compatible with some classrooms is equivalent to determining whether $s_j \ge f_k$ for some classroom $k$.
 
-    \begin{listu}
+    \begin{itemize}
         \item If it is compatible, we add jecture $j$ to classroom $k$ with minimum key, and increase its key to $f_j$.
         \item If it is not compatible, we add a new classroom to the priority queue with key $f_j$.
-    \end{listu}
+    \end{itemize}
 
     \item There are $\mathcal{O}(n)$ priority queue operations, each of which takes $\mathcal{O}(\log n)$ time.
 
     This gives a total running time of \[
         \mathcal{O}(n \log n).
     \]
-\end{listu}
+\end{itemize}
 
 \subsection{Proof of Optimality}
 
@@ -349,7 +349,7 @@ We claim that the greedy algorithm uses only these many classrooms.
 
 \subsubsection{Upper Bound}
 
-\begin{listu}
+\begin{itemize}
     \item Let $d$ be the number of classrooms used by the greedy algorithm.
 
     \item Classroom $d$ was opened because there was a lecture $j$ which was incompatible with some lectures already scheduled in each of $d - 1$ other classrooms.
@@ -361,7 +361,7 @@ We claim that the greedy algorithm uses only these many classrooms.
     \item So, at time $s_j$, we have $d$ mutually overlapping lectures.
 
     \item Hence, $\text{depth} \ge d$, which is the number of classrooms used by the greedy algorithm.
-\end{listu}
+\end{itemize}
 
 By the lower bound and the upper bound, we have that the greedy algorithm is optimal. \qed
 
@@ -372,28 +372,28 @@ By the lower bound and the upper bound, we have that the greedy algorithm is opt
 \end{definition}
 
 With this definition, we can restate the interval scheduling and partitioning problems as graph problems.
-\begin{listu}
+\begin{itemize}
     \item Interval Scheduling: find a maximum independent set (MIS) in an interval graph.
     \item Interval Partitioning: find a minimum coloring of an interval graph.
-\end{listu}
+\end{itemize}
 
 MIS and graph coloring are NP-hard for general graphs, but they are efficiently solvable for interval graphs.
-\begin{listu}
+\begin{itemize}
     \item Graphs which can be obtained from incompatibility of intervals
     \item In fact, this holds even when we are not given an interval representation of the graph
-\end{listu}
+\end{itemize}
 
 \section{Minimizing Lateness}
 
 \subsection{Problem Definition}
 
-\begin{listu}
+\begin{itemize}
     \item We have a single machine.
     \item Each job $j$ requires $t_j$ units of time and is due by time $d_j$.
     \item If it is scheduled to start at time $s_j$, then it finishes at time $f_j = s_j + t_j$.
     \item The \term{lateness} of job $j$ is defined as $\ell_j = \max\{0, f_j - d_j\}$.
     \item \textbf{Goal:} schedule jobs to minimize the maximum lateness, $L = \max_j \ell_j$.
-\end{listu}
+\end{itemize}
 
 To contrast with interval scheduling problems, we now can decide the start time of each job, and the deadlines are soft.
 
@@ -420,17 +420,17 @@ To contrast with interval scheduling problems, we now can decide the start time 
 \subsection{Greedy Algorithm}
 
 The greedy algorithm for minimizing lateness follows the template
-\begin{listu}
+\begin{itemize}
     \item Consider jobs one-by-one in some ``natural'' order.
     \item Schedule jobs in this order (nothing special to do here, since we have to schedule all jobs and there is only one machine available)
-\end{listu}
+\end{itemize}
 
 Here, the ``natural'' order may be
-\begin{listu}
+\begin{itemize}
     \item \textbf{Shortest processing time first:} ascending order of processing time $t_j$.
     \item \textbf{Earliest deadline first:} ascending order of due time $d_j$.
     \item \textbf{Smallest slack first:} ascending order of $d_j - t_j$.
-\end{listu}
+\end{itemize}
 
 As expected, some of these orders will not yield the optimal solution.
 
@@ -486,7 +486,7 @@ We can implement the greedy algorithm using \bred{earliest deadline first}.
 
 We make the following observations.
 
-\begin{listu}
+\begin{itemize}
     \item \textbf{Observation 1:} There is an optimal schedule with \bred{no idle time}.
 
     \begin{center}
@@ -514,7 +514,7 @@ We make the following observations.
 
         Let $i$ and $j$ be the inverted jobs.
 
-        \begin{listu}
+        \begin{itemize}
             \item $\ell_k = \ell'_k$ for all $k \ne i, j$.
 
             \item $\ell'_i \le \ell_i$
@@ -524,18 +524,18 @@ We make the following observations.
             This uses the fact that, due to the inversion, $d_j \ge d_i$.
 
             \item $\displaystyle L' = \max\left\{\ell'_i, \ell'_j, \max_{k \ne i, j} \ell'_k\right\} \le \max\left\{\ell_i, \ell_j, \max_{k \ne i, j} \ell_k\right\} = L$ \qed
-        \end{listu}
-\end{listu}
+        \end{itemize}
+\end{itemize}
 
 Observations 4 and 5 together is the key to the proof of optimality.
 
 \begin{remark}
     Recall the proof of optimality of the greedy algorithm for interval scheduling
 
-    \begin{listu}
+    \begin{itemize}
         \item Take an optimal solution matching greedy for $r$ steps, and produced another optimal solution matching greedy for $r + 1$ steps
         \item ``Wrapped'' in a proof by contradiction or proof by induction
-    \end{listu}
+    \end{itemize}
 
     Observations 4 and 5 provide a similar structure. If optimal solution does not fully match greedy (the number of inversions $\ge 1$), we can swap an adjacent inverted pair and reduce the number of inversions by one.
 \end{remark}
@@ -545,7 +545,7 @@ Observations 4 and 5 together is the key to the proof of optimality.
 \begin{proof}
     Suppose for contradiction that the greedy EDF solution is not optimal
 
-    \begin{listu}
+    \begin{itemize}
         \item Consider an optimal schedule $S^*$ with the fewest inversions\footnote{Note that this part is a little flawed, as $S^*$ may be different from the greedy EDF solution based on how we break ties. To fix this, we can simply change the way we break ties until we get the same solution as the greedy EDF solution. Since these jobs are adjacent, we can do this by swapping adjacent jobs, and, by Observation 5, this will not increase the lateness, so the solution remains optimal.}. Without loss of generality, assume it has no idle time.
 
         \item Since the greedy EDF solution is not optimal, there is at least one inversion in $S^*$.
@@ -555,7 +555,7 @@ Observations 4 and 5 together is the key to the proof of optimality.
         \item By Observation 5, swapping the adjacent pair keeps the schedule optimal but reduces the number of inversions by 1
 
         This is a contradiction, as $S^*$ has the fewest inversions.
-    \end{listu}
+    \end{itemize}
 
     Thus, the greedy EDF solution is optimal.
 \end{proof}
@@ -569,7 +569,7 @@ Observations 4 and 5 together is the key to the proof of optimality.
         For each $r \in \left\{ 0, 1, 2, \dots, \binom{n}{2} \right\}$, there is an optimal schedule with at most $r$ inversions.
     \end{claim}
 
-    \begin{listu}
+    \begin{itemize}
         \item \textbf{Base case:} $r = \binom{n}{2}$
 
         This is trivially true.
@@ -582,7 +582,7 @@ Observations 4 and 5 together is the key to the proof of optimality.
 
         Without loss of generality, assume it has no idle time.
 
-        \begin{listu}
+        \begin{itemize}
             \item If $S^*$ has at most $t$ inversions, we are done.
 
             \item If $S^*$ has exactly $t + 1$ inversions, then there is a pair of inverted jobs $(i, j)$ scheduled consecutively by Observation 4.
@@ -590,8 +590,8 @@ Observations 4 and 5 together is the key to the proof of optimality.
             By Observation 5, swapping the adjacent pair keeps the schedule optimal but reduces the number of inversions by 1.
 
             The number of inversions in the new schedule is at most $t$, and the claim holds.
-        \end{listu}
-    \end{listu}
+        \end{itemize}
+    \end{itemize}
 
     Claim for $r = 0$ shows optimality of the greedy EDF solution.
 \end{proof}
@@ -623,7 +623,6 @@ We observe that prefix-free encodings can be represented by a binary tree.
 
 \begin{center}
     \tikzsetnextfilename{huffman}
-    \tikzexternalenable
     \begin{tikzpicture}[
         inte-node/.style={circle,text=white,fill=orange},
         leaf-node/.style={rectangle,text=white,fill=orange},
@@ -656,7 +655,6 @@ We observe that prefix-free encodings can be represented by a binary tree.
         \draw[thick] (15) -- (c) node[midway, above left] {0};
         \draw[thick] (15) -- (d) node[midway, above right] {1};
     \end{tikzpicture}
-    \tikzexternaldisable
 \end{center}
 
 \vspace{-3em}
@@ -689,7 +687,6 @@ The Huffman encoding algorithm is a greedy algorithm that generates an optimal p
     We use the Huffman encoding algorithm to generate the tree for the previous example.
 
     \begin{center}
-        \tikzexternalenable
         \begin{tikzpicture}[
             inte-node/.style={circle,text=white,fill=orange},
             leaf-node/.style={rectangle,text=white,fill=orange},
@@ -701,11 +698,9 @@ The Huffman encoding algorithm is a greedy algorithm that generates an optimal p
             \node[leaf-node] (b) at (3, 0) {$b:20$};
             \node[leaf-node] (a) at (5, 0) {$a:42$};
         \end{tikzpicture}
-        \tikzexternaldisable
 
         \vspace{0.25em} \includegraphics[width=2em]{tikz/down-arrow.pdf} \vspace{0.25em}
 
-        \tikzexternalenable
         \begin{tikzpicture}[
             inte-node/.style={circle,text=white,fill=orange},
             leaf-node/.style={rectangle,text=white,fill=orange},
@@ -722,11 +717,9 @@ The Huffman encoding algorithm is a greedy algorithm that generates an optimal p
             \draw[thick] (15) -- (c);
             \draw[thick] (15) -- (d);
         \end{tikzpicture}
-        \tikzexternaldisable
 
         \vspace{0.25em} \includegraphics[width=2em]{tikz/down-arrow.pdf} \vspace{0.25em}
 
-        \tikzexternalenable
         \begin{tikzpicture}[
             inte-node/.style={circle,text=white,fill=orange},
             leaf-node/.style={rectangle,text=white,fill=orange},
@@ -747,11 +740,9 @@ The Huffman encoding algorithm is a greedy algorithm that generates an optimal p
             \draw[thick] (23) -- (e);
             \draw[thick] (23) -- (f);
         \end{tikzpicture}
-        \tikzexternaldisable
 
         \vspace{0.25em} \includegraphics[width=2em]{tikz/down-arrow.pdf} \vspace{0.25em}
 
-        \tikzexternalenable
         \begin{tikzpicture}[
             inte-node/.style={circle,text=white,fill=orange},
             leaf-node/.style={rectangle,text=white,fill=orange},
@@ -775,11 +766,9 @@ The Huffman encoding algorithm is a greedy algorithm that generates an optimal p
             \draw[thick] (35) -- (15);
             \draw[thick] (35) -- (b);
         \end{tikzpicture}
-        \tikzexternaldisable
 
         \vspace{0.25em} \includegraphics[width=2em]{tikz/down-arrow.pdf} \vspace{0.25em}
 
-        \tikzexternalenable
         \begin{tikzpicture}[
             inte-node/.style={circle,text=white,fill=orange},
             leaf-node/.style={rectangle,text=white,fill=orange},
@@ -810,7 +799,7 @@ The Huffman encoding algorithm is a greedy algorithm that generates an optimal p
 
         \vspace{0.25em} \includegraphics[width=2em]{tikz/down-arrow.pdf} \vspace{0.25em}
 
-        \includegraphics{tikz/huffman.pdf}
+        % \includegraphics{tikz/huffman.pdf}
     \end{center}
 \end{example}
 
@@ -823,7 +812,7 @@ The running time of the Huffman encoding algorithm is $\mathcal{O}(n \log n)$. H
 \begin{proof}
     By induction on the number of symbols $n$.
 
-    \begin{listu}
+    \begin{itemize}
         \item \textbf{Base case:} $n = 2$
 
         Both encodings which assign 1 bit to each symbol are optimal.
@@ -859,14 +848,14 @@ The running time of the Huffman encoding algorithm is $\mathcal{O}(n \log n)$. H
         \textit{Proof.}
             Proof of \hyperref[lem:huffman-2]{Lemma 2}
 
-            \begin{listo}
+            \begin{enumerate}
                 \item Let $T$ be an optimal tree.
                 \item Let $x$ be the label with the lowest frequency in $T$.
                 \item If $x$ does not have the longest encoding in $T$, swap it with the label with the longest encoding.
                 \item Due to optimality, $x$ must have a sibling $y'$ (otherwise, we can swap $x$ with its parent and reduce the total encoding length).
                 \item If $y'$ is not $y$, swap it with $y$.
                 \item We check that Steps 3 and 5 does not change the overall length. \qed
-            \end{listo}
+            \end{enumerate}
 
         Let $x$ and $y$ be the two least frequency symbols that Huffman combines in the first step into ``$xy$''.
 
@@ -878,13 +867,13 @@ The running time of the Huffman encoding algorithm is $\mathcal{O}(n \log n)$. H
 
         By the inductive hypothesis, $T'$ is optimal for the $n - 1$ symbols, so $\textsc{Length}(H') \le \textsc{Length}(T')$.
 
-        \begin{listu}
+        \begin{itemize}
             \item $\textsc{Length}(H) = \textsc{Length}(H') + (w_x + w_y) \cdot 1$
             \item $\textsc{Length}(T) = \textsc{Length}(T') + (w_x + w_y) \cdot 1$
-        \end{listu}
+        \end{itemize}
 
         Therefore, $\textsc{Length}(H) \le \textsc{Length}(T)$.
-    \end{listu}
+    \end{itemize}
 
     Thus, the Huffman encoding algorithm returns an optimal encoding.
 \end{proof}

@@ -2,55 +2,55 @@
 
 \section{Course Information}
 
-\begin{listu}
+\begin{itemize}
     \item \textbf{Instructor}: Nathan Wiebe
 
-    \begin{listu}
+    \begin{itemize}
         \item \textbf{Email}: \href{mailto:nawibe@cs.toronto.edu}{nawibe@cs.toronto.edu}
         \item \textbf{Office}: SF 3318C
-    \end{listu}
+    \end{itemize}
 
     \item \textbf{Text}: [CLRS] \textit{Introduction to Algorithms}: Cormen, Thomas H., Leiserson, Charles E., Rivest, Ronald L., Stein, Clifford
 
     % Optional: 
     
-    % \begin{listu}
+    % \begin{itemize}
     %     \item [DPV] \textit{Algorithms}: Dasgupta, Sanjoy, Papadimitriou, Christos H., Vazirani, Umesh
     %     \item [KT] \textit{Algorithm Design}: Kleinberg, Jon, Tardos, Eva
-    % \end{listu}
+    % \end{itemize}
 
     \item \textbf{Disclaimer}: Many things are up in the air, so expect a somewhat bumpy ride at the start but hopefully, we will get through together! Use any of the feedback mediums (email, Piazza, \dots) to let the instructor know if there are any suggestions for improvement. 
-\end{listu}
+\end{itemize}
 
 \section{Grading}
 
 \subsection{Assignments}
 
-\begin{listu}
+\begin{itemize}
     \item \bred{4 assignments}, best 3 out of 4
     \item Group work
-    \begin{listu}
+    \begin{itemize}
         \item In groups of \itblue{up to three} students
         \item Best way to learn is for each member to try each problem
-    \end{listu}
+    \end{itemize}
     \item Questions will be \bred{more difficult}
-    \begin{listu}
+    \begin{itemize}
         \item May need to mull them over for several days; do not expect to start and finish the assignment on the same day!
         \item May include bonus questions
-    \end{listu}
+    \end{itemize}
     \item Submission on \bred{crowdmark}, more details later. May need to compress the PDF. 
-\end{listu}
+\end{itemize}
 
 \subsection{Tests}
 
-\begin{listu}
+\begin{itemize}
     \item 2 term tests, one end-of-term test (final exam / assessment)
     \item Time and Place
-    \begin{listu}
+    \begin{itemize}
         \item Fridays during Tutorials
         \item In-person 
-    \end{listu}
-\end{listu}
+    \end{itemize}
+\end{itemize}
 
 \subsection{Grading Scheme}
 
@@ -68,61 +68,61 @@
 
 \subsection{What is this course about?}
 
-\begin{listu}
+\begin{itemize}
     \item What if we can't find an efficient algorithm for a problem?
 
-    \begin{listu}
+    \begin{itemize}
         \item Try to prove that the problem is hard 
         \item Formally establish complexity results 
         \item NP-completeness, NP-hardness, \dots
-    \end{listu}
+    \end{itemize}
     
     \item We'll often find that one problem may be easy, but its simple variants may suddenly become hard. 
     
-    \begin{listu}
+    \begin{itemize}
         \item Minimum spanning tree (MST) vs. bounded degree MST
         \item 2-colorability vs 3-colorability
-    \end{listu}
-\end{listu}
+    \end{itemize}
+\end{itemize}
 
 \subsection{Proofs}
 
 In this course you are expected to provide a clear and compelling argument about why you're right about ant claim about an algorithm. We call these argument proofs. 
 
 Proof structures used in this course:
-\begin{listu}
+\begin{itemize}
     \item Induction 
     \item Contradiction
     \item Desperation\dots
-\end{listu}
+\end{itemize}
 
 \subsubsection{Inductive Proof}
 
 Key idea with induction:
 
-\begin{listu}
+\begin{itemize}
     \item Break the problem into a number of steps, $s(i)$. 
     \item Show that induction hypothesis holds for base case $s(0)$. 
     \item Show that if hypothesis holds for $s(i)$ then it holds for step $s(i+1)$.
-\end{listu}
+\end{itemize}
 
 \begin{theorem}[Principle of Mathematical Induction]
     Let $P(n)$ be a predicate defined for integers $n \geq 0$. If
-    \begin{listo}
+    \begin{enumerate}
         \item $P(0)$ is true, and
         \item $P(k)$ implies $P(k+1)$ for all integers $k \geq 0$,
-    \end{listo}
+    \end{enumerate}
     then $P(n)$ is true for all integers $n \geq 0$.
 \end{theorem}
 
 \textbf{\color{primary}Example.}
     Say you want to find the best person to marry in Stardew Valley. 
 
-    \begin{center}
-        \includegraphics[width=0.75\linewidth]{figures/Stardew Valley.png}
-    \end{center}
+    % \begin{center}
+    %     \includegraphics[width=0.75\linewidth]{figures/stardew-valley.png}
+    % \end{center}
 
-    You can apply a single iteration of Bubblesort to find that Sebastian is objectively the best person to marry. 
+    You can apply a single iteration of \textsc{Bubble-Sort} to find that Sebastian is objectively the best person to marry. 
 
     \begin{algorithm}
         \begin{algorithmic}[1]
@@ -141,7 +141,7 @@ Key idea with induction:
     \textit{Proof.}
         Proof by induction on the number of iterations of \textsc{Bubble-Sort}.
 
-        \begin{listu}
+        \begin{itemize}
             \item \textbf{Base case}: $s(1)$
             
             Then swap doesn't happen and you have a trivially sorted array.
@@ -155,7 +155,7 @@ Key idea with induction:
             \]
 
 
-            \begin{listo}
+            \begin{enumerate}
                 \item \textbf{Case 1}: $x > y$
                 
                 Then, comparison between $x$, $y$ says you should swap them.
@@ -163,31 +163,31 @@ Key idea with induction:
                 \item \textbf{Case 2}: $x \le y$
                 
                 Then, comparison between $x$, $y$ says you should not swap them. The array is still sorted.
-            \end{listo}
-        \end{listu}
+            \end{enumerate}
+        \end{itemize}
 
     Thus, by induction, the algorithm will sort any array. \hfill\qed{\color{primary}\ensuremath\diamondsuit}
 
 \subsubsection{Contradiction}
 
-\begin{listu}
+\begin{itemize}
     \item Assume that the opposite of the hypothesis were true. 
     \item Show that if the opposite were true then the assumptions of the problem would be violated. 
-\end{listu}
+\end{itemize}
 
 This needs more finesse than a proof by induction. There can be a lot more slick when it works. 
 
-\begin{listu}
+\begin{itemize}
     \item Working out small examples of the problem helps. 
     \item Argue about the first/last position where the hypothesis fails to be true. 
-\end{listu}
+\end{itemize}
 
 \begin{example}
     Assume that \textsc{Bubblesort} is does not return the best element (smallest) on right. 
 
     Let $i$ be first position where in the array $s$, $s(i + 1) > s(i)$.
 
-    \begin{listo}
+    \begin{enumerate}
         \item \textbf{Case 1}: $s(i) > s(i+1)$
         
         Then, \textsc{Bubblesort} would have swapped them. 
@@ -195,5 +195,5 @@ This needs more finesse than a proof by induction. There can be a lot more slick
         \item \textbf{Case 2}: $s(i) < s(i+1)$
         
         Then, \textsc{Bubblesort} would have not swapped them.
-    \end{listo}
+    \end{enumerate}
 \end{example}

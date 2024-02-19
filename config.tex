@@ -14,6 +14,7 @@
 \usepackage{algpseudocode}
 \usepackage{amsfonts,amsmath,amsthm,amssymb}
 \usepackage{booktabs}
+\usepackage{etoolbox}
 \usepackage{float}
 \usepackage{graphicx}
 \usepackage{latexsym}
@@ -43,6 +44,11 @@
         \draw[->, decorate, decoration={zigzag, segment length=4, amplitude=.9, post=lineto, post length=2pt}] (0,0) -- (0.5,0);
     }
 }
+
+\newcommand{\R}{\mathbb{R}}
+
+\newcommand{\blue}[1]{{\color{blue}#1}}
+\newcommand{\red}[1]{{\color{red}#1}}
 
 % ------------------
 % Command Redefinitions
@@ -118,8 +124,10 @@
 % ------------------
 \usetikzlibrary{external}
 \tikzexternalize[prefix=tikz/]
-% \tikzset{external/only named=true}
+% Disable externalization globally, and only enable it for `tikzpicture'
 \tikzexternaldisable
+\BeforeBeginEnvironment[label]{tikzpicture}{\tikzexternalenable}
+\AfterEndEnvironment[label]{tikzpicture}{\tikzexternaldisable}
 
 % ------------------
 % Boxes
@@ -204,15 +212,16 @@
 \usepackage{enumitem}
 
 \newcommand{\cnumero}[2]{
-    \tikz[baseline=(myanchor.base)]
-    \node[minimum size=0.2cm,circle,
-        inner sep=1pt,draw, #2,thick,fill=#2](myanchor)
+    \tikz[baseline=(char.base)]
+    \node[minimum size=0.2cm,circle,inner sep=1pt,draw, #2,thick,fill=#2](char)
     {\color{white}\bfseries\fontsize{8}{8}#1};}
-
 \newcommand*{\itembolasazules}[1]{\protect\cnumero{#1}{primary}}
 
-\newenvironment{listo} {\begin{enumerate}[label=\itembolasazules{\arabic*}]} {\end{enumerate}}
-\newenvironment{listu} {\begin{itemize}  [label=$\color{primary} \bullet$]}  {\end{itemize}}
+% \newenvironment{listo} {\begin{enumerate}[label=\itembolasazules{\arabic*}]} {\end{enumerate}}
+% \newenvironment{listu} {\begin{itemize}  [label=$\color{primary} \bullet$]}  {\end{itemize}}
+
+\setlist[itemize]{label=$\color{primary} \bullet$}
+\setlist[enumerate]{label=\itembolasazules{\arabic*}}
 
 % ------------------
 % Table of Contents
@@ -220,7 +229,6 @@
 \usepackage{blindtext}
 \usepackage{framed}
 \usepackage{titletoc}
-\usepackage{etoolbox}
 
 \patchcmd{\tableofcontents}{\contentsname}{\contentsname}{}{}
 
@@ -313,8 +321,8 @@
 % ------------------
 \usepackage{csquotes}
 \usepackage[
-    style=alphabetic, 
-    citestyle=numeric,
+    style=ieee, 
+    citestyle=ieee,
     sorting=nyt,
     sortcites=true,
     autopunct=true,
@@ -339,6 +347,7 @@
 \usetikzlibrary{shapes.geometric}
 \usepackage{anyfontsize}
 \newcommand{\frontpage}[3]{
+    \tikzset{external/export next=false}
     \begin{tikzpicture}[remember picture, overlay]
         % Background
         \fill[primary] (current page.south west) rectangle (current page.north east);
